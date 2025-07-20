@@ -1,10 +1,15 @@
 
-import 'package:dio/dio.dart';
+import 'package:darrbiny/features/login/data/repos/login_repo.dart';
+import 'package:darrbiny/features/login/data/repos/login_repo_impl.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../features/home/data/repos/home_repo.dart';
 import '../../features/home/data/repos/home_repo_impl.dart';
+import '../../features/instructor_home/data/repos/instructor_home_repo.dart';
+import '../../features/instructor_home/data/repos/instructor_home_repo_impl.dart';
+import '../../features/sign_up/data/repos/sign_up_repo.dart';
+import '../../features/sign_up/data/repos/sign_up_repo_impl.dart';
 import 'storage_service.dart';
 
 
@@ -23,12 +28,16 @@ class ServiceLocator {
   }
 
   void _initServices() {
-    sl.registerLazySingleton<StorageService>(() => StorageService());
-    sl.registerLazySingleton<HomeRepo>(() => HomeRepoImpl());
+
 
   }
 
   void _initRepositories() {
+    sl.registerLazySingleton<SignUpRepo>(() => SignUpRepoImpl());
+    sl.registerLazySingleton<LoginRepo>(() => LoginRepoImpl());
+    sl.registerLazySingleton<StorageService>(() => StorageService());
+    sl.registerLazySingleton<HomeRepo>(() => HomeRepoImpl());
+    sl.registerLazySingleton<InstructorHomeRepo>(() => InstructorHomeRepoImpl());
     // sl.registerLazySingleton<LoginRepo>(() => LoginRepoImpl());
     // sl.registerLazySingleton<SignupRepo>(() => SignupRepoImpl());
     // sl.registerLazySingleton<MarketRepo>(() => MarketRepoImpl());

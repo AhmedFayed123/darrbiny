@@ -22,6 +22,8 @@ class SignUpView extends StatelessWidget {
     final formKey = GlobalKey<FormState>();
     final nameController = TextEditingController();
     final phoneController = TextEditingController();
+    final passwordController = TextEditingController();
+    final confirmPasswordController = TextEditingController();
 
     return AuthBaseScreen(
       headerImage: Image.asset(Assets.imagesLogo),
@@ -67,7 +69,41 @@ class SignUpView extends StatelessWidget {
                     onCountryChanged: (country) {
                       signupController.updateCountryCode(country.phoneCode);
                     },
+                  ),SizedBox(height: 16.h),
+                  CustomFormField(
+                    labelText: 'كلمة المرور',
+                    controller: passwordController,
+                    keyboardType: TextInputType.visiblePassword,
+                    obscureText: true,
+                    prefixIcon: const Icon(Icons.lock),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'الرجاء إدخال كلمة المرور';
+                      }
+                      if (value.length < 8) {
+                        return 'يجب أن تكون كلمة المرور 8 أحرف على الأقل';
+                      }
+                      return null;
+                    },
                   ),
+                  SizedBox(height: 16.h),
+                  CustomFormField(
+                    labelText: 'تأكيد كلمة المرور',
+                    controller: confirmPasswordController,
+                    keyboardType: TextInputType.visiblePassword,
+                    obscureText: true,
+                    prefixIcon: const Icon(Icons.lock_outline),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'الرجاء تأكيد كلمة المرور';
+                      }
+                      if (value != passwordController.text) {
+                        return 'كلمتا المرور غير متطابقتين';
+                      }
+                      return null;
+                    },
+                  ),
+
                   SizedBox(height: 32.h),
                   Obx(() => CustomButton(
                     text: 'التالي',
@@ -75,6 +111,7 @@ class SignUpView extends StatelessWidget {
                     onPressed: () {
                       if (formKey.currentState!.validate()) {
                         signupController.updateFullName(nameController.text);
+                        signupController.updatePassword(passwordController.text);
                         signupController.sendOtp();
                       }
                     },

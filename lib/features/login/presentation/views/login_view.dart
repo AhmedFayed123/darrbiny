@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -9,9 +8,7 @@ import '../../../../core/components/widgets/custom_form_field.dart';
 import '../../../../core/constant/colors.dart';
 import '../../../../core/constant/styles.dart';
 import '../../../../generated/assets.dart';
-import '../../../home/presentation/views/home_view.dart';
 import '../../../sign_up/presentation/views/sign_up_view.dart';
-import '../../../sign_up/presentation/views/upload_driving_photo.dart';
 import '../controller/login_controller.dart';
 
 class LoginView extends StatelessWidget {
@@ -22,75 +19,89 @@ class LoginView extends StatelessWidget {
     final loginController = Get.put(LoginController());
     final formKey = GlobalKey<FormState>();
     final phoneController = TextEditingController();
+    final passwordController = TextEditingController();
 
     return AuthBaseScreen(
       headerImage: Image.asset(Assets.imagesCuate),
-      child: SingleChildScrollView(
-        padding: EdgeInsets.only(
-          bottom: MediaQuery.of(context).viewInsets.bottom + 24.h,
-          top: 12.h,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('أهلاً بك', style: AppStyles.headingStyle.copyWith(color: kGray600)),
-            Text('قم بتسجيل الدخول', style: AppStyles.body16),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 28.h),
-              child: Form(
-                key: formKey,
-                child: Column(
-                  children: [
-                    CustomFormField(
-                      labelText: 'رقم الهاتف',
-                      controller: phoneController,
-                      keyboardType: TextInputType.phone,
-                      isCountryPicker: true,
-                      initialCountryCode: 'SA',
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'الرجاء إدخال رقم الهاتف';
-                        }
-                        return null;
-                      },
-                      onChanged: (value) {
-                        loginController.updatePhoneNumber(value);
-                      },
-                      onCountryChanged: (country) {
-                        loginController.updateCountryCode(country.phoneCode ?? '966');
-                      },
-                    ),
-                    SizedBox(height: 32.h),
-                    Obx(() => CustomButton(
-                      text: 'التالي',
-                      isLoading: loginController.isLoading.value,
-                      onPressed: () {
-                        Get.offAll(() => const UploadDrivingPhoto());
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('أهلاً بك', style: AppStyles.headingStyle.copyWith(color: kGray600)),
+          Text('قم بتسجيل الدخول', style: AppStyles.body16),
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 28.h),
+            child: Form(
+              key: formKey,
+              child: Column(
+                children: [
+                  CustomFormField(
+                    labelText: 'رقم الهاتف',
+                    controller: phoneController,
+                    keyboardType: TextInputType.phone,
+                    isCountryPicker: true,
+                    initialCountryCode: 'SA',
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'الرجاء إدخال رقم الهاتف';
+                      }
+                      return null;
+                    },
+                    onChanged: (value) {
+                      loginController.updatePhoneNumber(value);
+                    },
+                    onCountryChanged: (country) {
+                      loginController.updateCountryCode(country.phoneCode ?? '966');
+                    },
+                  ),
+                  SizedBox(height: 16.h),
+                  CustomFormField(
+                    labelText: 'كلمة المرور',
+                    controller: passwordController,
+                    keyboardType: TextInputType.visiblePassword,
+                    obscureText: true,
+                    prefixIcon: const Icon(Icons.lock),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'الرجاء إدخال كلمة المرور';
+                      }
+                      if (value.length < 8) {
+                        return 'يجب أن تكون كلمة المرور 8 أحرف على الأقل';
+                      }
+                      return null;
+                    },
+                    onChanged: (value) {
+                      loginController.updatePassword(value);
+                    },
+                  ),
 
-                        // if (formKey.currentState!.validate()) {
-                        //   loginController.loginWithPhone();
-                        // }
-                      },
-                    )),
-                    SizedBox(height: 16.h),
-                    CustomButton(
-                      text: 'إنشاء حساب',
-                      activeColor: kPrimaryColor,
-                      textStyle: TextStyle(
-                        fontSize: 16.sp,
-                        color: kSecondaryColor,
-                        fontWeight: FontWeight.w500,
-                      ),
-                      onPressed: () {
-                        Get.offAll(const SignUpView());
-                      },
+                  SizedBox(height: 32.h),
+                  Obx(() => CustomButton(
+                    text: 'تسجيل الدخول',
+                    isLoading: loginController.isLoading.value,
+                    onPressed: () {
+                      if (formKey.currentState!.validate()) {
+                        loginController.loginWithApi();
+                      }
+                    },
+                  )),
+                  SizedBox(height: 16.h),
+                  CustomButton(
+                    text: 'إنشاء حساب',
+                    activeColor: kPrimaryColor,
+                    textStyle: TextStyle(
+                      fontSize: 16.sp,
+                      color: kSecondaryColor,
+                      fontWeight: FontWeight.w500,
                     ),
-                  ],
-                ),
+                    onPressed: () {
+                      Get.offAll(const SignUpView());
+                    },
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

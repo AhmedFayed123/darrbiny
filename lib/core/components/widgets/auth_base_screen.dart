@@ -36,7 +36,6 @@ class AuthBaseScreen extends StatelessWidget {
       resizeToAvoidBottomInset: true,
       body: Stack(
         children: [
-          // 1️⃣ الخلفية البنفسجية
           Positioned(
             left: 0,
             right: 0,

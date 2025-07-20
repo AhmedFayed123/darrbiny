@@ -1,9 +1,7 @@
-
 import 'package:darrbiny/features/sign_up/presentation/views/widgets/otp_box.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-
 import '../../../../core/components/widgets/auth_base_screen.dart';
 import '../../../../core/components/widgets/custom_button.dart';
 import '../../../../core/constant/colors.dart';
@@ -28,18 +26,25 @@ class OtpView extends StatelessWidget {
             Text('ادخال رمز التحقق لتفعيل الحساب!',
                 style: AppStyles.headingStyle.copyWith(color: kGray600)),
             SizedBox(height: 8.h),
-            Obx(() => Text(
-              'تحقق من الرسائل الخاصة برقم هاتفك ${controller.formattedPhone}',
+            Text(
+              'تحقق من الرسائل الخاصة برقم هاتفك ${controller.formattedPhone ?? ""}',
               style: AppStyles.body16,
-            )),
+            ),
             Padding(
               padding: EdgeInsets.symmetric(vertical: 28.h),
               child: Column(
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: List.generate(5, (index) => OtpBox(index: index)),
+                  Wrap(
+                    spacing: 8.w,
+                    runSpacing: 8.h,
+                    alignment: WrapAlignment.center,
+                    children: List.generate(6, (index) => SizedBox(
+                      width: 45.w,
+                      height: 55.h,
+                      child: OtpBox(index: index),
+                    )),
                   ),
+
                   SizedBox(height: 32.h),
                   Obx(() => CustomButton(
                     text: 'التالي',

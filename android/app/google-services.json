@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "540314321401",
+    "project_id": "darrbiny-auth",
+    "storage_bucket": "darrbiny-auth.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:540314321401:android:2f383a7174de0dbbb9bd28",
+        "android_client_info": {
+          "package_name": "com.example.darrbiny"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCM3gL2YzPQqu-CuaqbbpB-44EzvqOII6c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:540314321401:android:6232975b1541e172b9bd28",
+        "android_client_info": {
+          "package_name": "com.example.drbny"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCM3gL2YzPQqu-CuaqbbpB-44EzvqOII6c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

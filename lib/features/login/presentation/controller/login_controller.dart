@@ -1,14 +1,18 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:darrbiny/features/instructor_home/presentation/views/instructor_home_view.dart';
 import 'package:get/get.dart';
 
-import '../../../home/presentation/views/home_view.dart';
+import '../../../../core/services/service_locator.dart';
+import '../../../../core/services/storage_service.dart';
+import '../../data/repos/login_repo.dart';
 
 class LoginController extends GetxController {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final LoginRepo loginRepo = sl<LoginRepo>();
 
   var isLoading = false.obs;
   var countryCode = '966'.obs;
   var phoneNumber = ''.obs;
+  var password = ''.obs;
+  final StorageService storageService = StorageService();
 
   void updatePhoneNumber(String phone) {
     phoneNumber.value = phone;
@@ -18,50 +22,29 @@ class LoginController extends GetxController {
     countryCode.value = code;
   }
 
-  Future<void> loginWithPhone() async {
-    final fullPhone = '+${countryCode.value}${phoneNumber.value}';
+  void updatePassword(String pass) {
+    password.value = pass;
+  }
 
+  Future<void> loginWithApi() async {
     isLoading.value = true;
-    try {
-      await _auth.verifyPhoneNumber(
-        phoneNumber: fullPhone,
-        timeout: const Duration(seconds: 60),
 
-        // ✅ تسجيل مباشر بدون كود يدوي
-        verificationCompleted: (PhoneAuthCredential credential) async {
-          try {
-            await _auth.signInWithCredential(credential);
-            isLoading.value = false;
-            Get.offAll(() => const HomeView());
-          } catch (_) {
-            isLoading.value = false;
-            Get.snackbar("فشل الدخول", "تعذر تسجيل الدخول تلقائياً");
-          }
-        },
+    final fullPhone = phoneNumber.value;
 
-        // ❌ لو الرقم مش صحيح أو غير مدعوم
-        verificationFailed: (FirebaseAuthException e) {
-          isLoading.value = false;
-          String message = e.message ?? "فشل في التحقق";
-          if (e.code == 'invalid-phone-number') {
-            message = 'رقم الهاتف غير صالح.';
-          }
-          Get.snackbar("فشل التحقق", message);
-        },
+    final result = await loginRepo.login(
+      phone: fullPhone,
+      password: password.value,
+    );
 
-        // ⛔️ مش هنبعت كود
-        codeSent: (_, __) {
-          isLoading.value = false;
-          Get.snackbar("معلومة", "لم يتم تسجيل الدخول تلقائياً، حاول من جهاز آخر");
-        },
+    result.fold(
+          (failure) {
+        Get.snackbar("فشل", "فشل تسجيل الدخول: ${failure.message}");
+      },
+          (data) {
+        Get.offAll(() => const InstructorHomeView());
+      },
+    );
 
-        codeAutoRetrievalTimeout: (_) {
-          isLoading.value = false;
-        },
-      );
-    } catch (e) {
-      isLoading.value = false;
-      Get.snackbar("خطأ", "حدث خطأ أثناء تسجيل الدخول");
-    }
+    isLoading.value = false;
   }
 }

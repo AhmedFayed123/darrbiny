@@ -1,4 +1,6 @@
+import 'package:darrbiny/core/constant/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class InstructorTrainingCourseCard extends StatelessWidget {
   final String trainerName;
@@ -28,36 +30,23 @@ class InstructorTrainingCourseCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(24),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // مدة الكورس
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-              decoration: BoxDecoration(
-                color: const Color(0xFFFFF1B2),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Text(
-                duration,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 13,
-                ),
-              ),
-            ),
-            const SizedBox(height: 12),
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(24),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
 
-            // كورس تدريب + بيانات المدربة
-            Row(
+            decoration: BoxDecoration(
+              color: kSecondaryColor.withOpacity(.15),
+              borderRadius: BorderRadius.only(topLeft: Radius.circular(10.r),topRight: Radius.circular(10.r)),
+            ),
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text(
@@ -67,130 +56,158 @@ class InstructorTrainingCourseCard extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                Row(
-                  children: [
-                    CircleAvatar(
-                      radius: 20,
-                      backgroundImage: NetworkImage(trainerImageUrl),
-                    ),
-                    const SizedBox(width: 8),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          trainerName,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 14,
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Row(
-                          children: List.generate(
-                            5,
-                                (index) => Icon(
-                              index < rating ? Icons.star : Icons.star_border,
-                              color: Colors.amber,
-                              size: 16,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-
-            // الموقع
-            Row(
-              children: [
-                const Icon(Icons.location_on_outlined, color: Color(0xFF8B6EF6)),
-                const SizedBox(width: 4),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
                   decoration: BoxDecoration(
-                    border: Border.all(color: const Color(0xFF8B6EF6)),
-                    borderRadius: BorderRadius.circular(20),
+                    color: const Color(0xFFFFF1B2),
+                    borderRadius: BorderRadius.circular(10),
                   ),
-                  child: const Text(
-                    'موقع المتدربة',
-                    style: TextStyle(
-                      color: Color(0xFF8B6EF6),
-                      fontWeight: FontWeight.w500,
-                      fontSize: 12,
+                  child: Text(
+                    duration,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 13,
                     ),
                   ),
                 ),
               ],
             ),
-
-            const SizedBox(height: 12),
-
-            // تفاصيل التدريب
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                border: Border.all(color: const Color(0xFFEAE6F9)),
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Column(
+          ),
+          SizedBox(height: 16.h),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
                 children: [
-                  _buildRow('التاريخ ( من )', fromDate),
-                  _buildRow('التاريخ ( الى )', toDate),
-                  _buildRow('مكان التدريب', location),
-                  _buildRow('سيارة المدربة', trainerCar),
-                  _buildRow('طلب نقل المتدرب', transportRequest),
-                  _buildRow('السعر', '$price ﷼', isPrice: true),
+                  CircleAvatar(
+                    radius: 20,
+                    backgroundImage: AssetImage(trainerImageUrl),
+                  ),
+                  const SizedBox(width: 8),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        trainerName,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 14,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Row(
+                        children: List.generate(
+                          5,
+                              (index) => Icon(
+                            index < rating ? Icons.star : Icons.star_border,
+                            color: Colors.amber,
+                            size: 16,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ],
               ),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
+                decoration: BoxDecoration(
+                  border: Border.all(color: const Color(0xFF8B6EF6)),
+                  borderRadius: BorderRadius.circular(24),
+                ),
+                child: Row(
+                  children: [
+                    const Text(
+                      'موقع المتدربة',
+                      style: TextStyle(
+                        color: kSecondaryColor,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 12,
+                      ),
+                    ),
+                    SizedBox(width: 6.w,),
+                    const Icon(Icons.location_on_outlined, color: kSecondaryColor),
+
+                  ],
+                ),
+              ),
+
+            ],
+          ),
+
+          SizedBox(height: 16.h),
+
+
+          // تفاصيل التدريب
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
+            width: double.infinity,
+            decoration: BoxDecoration(
+              border: Border.all(color: kSecondaryColor),
+              borderRadius: BorderRadius.circular(24),
             ),
+            child: Column(
+              children: [
+                _buildRow('التاريخ ( من )', fromDate),
+                _buildRow('التاريخ ( الى )', toDate),
+                _buildRow('مكان التدريب', location),
+                _buildRow('سيارة المدربة', trainerCar),
+                _buildRow('طلب نقل المتدرب', transportRequest),
+                _buildRow('السعر', '$price ﷼', isPrice: true),
+              ],
+            ),
+          ),
 
-            const SizedBox(height: 16),
+          SizedBox(height: 16.h),
 
-            // العرض + السعر
-            Row(
+          // العرض + السعر
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.transparent,
+              borderRadius: BorderRadius.circular(25),
+              border: Border.all(
+                color: kSecondaryColor,
+                width: 1.2,
+              ),
+            ),
+            padding: EdgeInsets.symmetric(horizontal: 12.w,vertical: 4.h),
+            child: Row(
               children: [
                 Expanded(
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFF4F4F4),
-                      borderRadius: BorderRadius.circular(25),
+                  child: TextField(
+                    decoration: const InputDecoration(
+                      hintText: 'اكتب سعرك هنا',
+                      border: InputBorder.none,
                     ),
-                    child: const TextField(
-                      decoration: InputDecoration(
-                        hintText: 'اكتب سعرك هنا',
-                        border: InputBorder.none,
-                      ),
-                      style: TextStyle(fontSize: 14),
-                    ),
+                    style: const TextStyle(fontSize: 14),
                   ),
                 ),
-                const SizedBox(width: 8),
-                ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFE1D7FF),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18),
-                    ),
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                Container(
+                  decoration: BoxDecoration(
+                    color: kSecondaryColor.withOpacity(.15),
+                    borderRadius: BorderRadius.circular(25),
                   ),
-                  child: const Text(
-                    'قدم عرض',
-                    style: TextStyle(
-                      color: Color(0xFF6A4CD4),
-                      fontWeight: FontWeight.bold,
+                  child: TextButton(
+                    onPressed: () {},
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.symmetric(horizontal: 20.w,vertical: 8.h),
+                      foregroundColor: kSecondaryColor,
+                      minimumSize: const Size(0, 30),
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    ),
+                    child: const Text(
+                      'قدم عرض',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                      ),
                     ),
                   ),
                 ),
               ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -202,18 +219,18 @@ class InstructorTrainingCourseCard extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
+            title,
+            style: const TextStyle(
+              color: Color(0xFF999999),
+              fontSize: 13,
+            ),
+          ),
+          Text(
             value,
             style: TextStyle(
               fontWeight: isPrice ? FontWeight.bold : FontWeight.normal,
               fontSize: isPrice ? 16 : 14,
               color: isPrice ? const Color(0xFF8B6EF6) : Colors.black,
-            ),
-          ),
-          Text(
-            title,
-            style: const TextStyle(
-              color: Color(0xFF999999),
-              fontSize: 13,
             ),
           ),
         ],
