@@ -1,56 +1,41 @@
-class RequestRequest {
-  RequestRequest({
-      this.learnerId, 
-      this.instructorId, 
-      this.packageId, 
-      this.requestedStartDate, 
-      this.locationCity, 
-      this.locationArea, 
-      this.hasLearnerCar, 
-      this.requiresTransport, 
-      this.totalPrice, 
-      this.type, 
-      this.notes,});
+class BookingRequest {
+  final int learnerId;
+  final int instructorId;
+  final int packageId;
+  final String startDate;
+  final String locationCity;
+  final String locationArea;
+  final bool hasLearnerCar;
+  final bool requiresTransport;
+  final String totalPrice;
+  final String type;
+  final String notes;
 
-  RequestRequest.fromJson(dynamic json) {
-    learnerId = json['learner_id'];
-    instructorId = json['instructor_id'];
-    packageId = json['package_id'];
-    requestedStartDate = json['requested_start_date'];
-    locationCity = json['location_city'];
-    locationArea = json['location_area'];
-    hasLearnerCar = json['has_learner_car'];
-    requiresTransport = json['requires_transport'];
-    totalPrice = json['total_price'];
-    type = json['type'];
-    notes = json['notes'];
-  }
-  int? learnerId;
-  dynamic instructorId;
-  int? packageId;
-  String? requestedStartDate;
-  String? locationCity;
-  String? locationArea;
-  bool? hasLearnerCar;
-  bool? requiresTransport;
-  double? totalPrice;
-  String? type;
-  String? notes;
+  BookingRequest({
+    required this.learnerId,
+    required this.instructorId,
+    required this.packageId,
+    required this.startDate,
+    required this.locationCity,
+    required this.locationArea,
+    required this.hasLearnerCar,
+    required this.requiresTransport,
+    required this.totalPrice,
+    required this.type,
+    required this.notes,
+  });
 
-  Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    map['learner_id'] = learnerId;
-    map['instructor_id'] = instructorId;
-    map['package_id'] = packageId;
-    map['requested_start_date'] = requestedStartDate;
-    map['location_city'] = locationCity;
-    map['location_area'] = locationArea;
-    map['has_learner_car'] = hasLearnerCar;
-    map['requires_transport'] = requiresTransport;
-    map['total_price'] = totalPrice;
-    map['type'] = type;
-    map['notes'] = notes;
-    return map;
-  }
-
+  Map<String, dynamic> toJson() => {
+    "learner_id": learnerId,
+    "instructor_id": instructorId,
+    "package_id": packageId,
+    "start_date": startDate,
+    "location_city": locationCity,
+    "location_area": locationArea,
+    "has_learner_car": hasLearnerCar,
+    "requires_transport": requiresTransport,
+    "total_price": totalPrice,
+    "type": type,
+    "notes": notes,
+  };
 }

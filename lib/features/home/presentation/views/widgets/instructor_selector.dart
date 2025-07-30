@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -6,46 +5,19 @@ import 'package:get/get.dart';
 import '../../../../../core/constant/colors.dart';
 import '../../../../../core/constant/styles.dart';
 import '../../../../../generated/assets.dart';
+import '../../../../home/presentation/controller/home_controller/home_controller.dart';
 
 class InstructorController extends GetxController {
   final mode = 'جميع المدربات'.obs;
   final selectedInstructor = RxString('');
+  final searchQuery = ''.obs;
 
-  final instructors = [
-    {
-      'id': 1,
-      'name': 'هبة احمد',
-      'details': 'درب أكثر من + 23',
-    },
-    {
-      'id': 2,
-      'name': 'ليلى الحسيني',
-      'details': 'درب أكثر من + 23',
-    },
-    {
-      'id': 3,
-      'name': 'هالة محمد',
-      'details': 'درب أكثر من + 23',
-    },
-    {
-      'id': 4,
-      'name': 'يوست عبدالله',
-      'details': 'درب أكثر من + 23',
-    },
-    {
-      'id': 5,
-      'name': 'سارة العتيبي',
-      'details': 'درب أكثر من + 23',
-    },
-  ];
-
-  /// ✅ تستخدم عند إرسال البيانات للـ API
   int? get selectedInstructorId {
     if (mode.value == 'جميع المدربات') return null;
-    final instructor = instructors.firstWhereOrNull(
-          (inst) => inst['name'] == selectedInstructor.value,
-    );
-    return instructor?['id'] as int?;
+    final instructor = Get.find<HomeController>()
+        .instructorsList
+        .firstWhereOrNull((inst) => inst.name == selectedInstructor.value);
+    return instructor?.id;
   }
 }
 
@@ -55,6 +27,7 @@ class InstructorSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(InstructorController());
+    final homeController = Get.find<HomeController>();
 
     return Container(
       padding: EdgeInsets.all(16.r),
@@ -100,7 +73,7 @@ class InstructorSelector extends StatelessWidget {
                   selected: controller.mode.value == 'اختيار مدربة',
                   onTap: () {
                     controller.mode.value = 'اختيار مدربة';
-                    _showInstructorsBottomSheet(context, controller);
+                    _showInstructorsBottomSheet(context, controller, homeController);
                   },
                   showArrow: true,
                 ),
@@ -125,7 +98,10 @@ class InstructorSelector extends StatelessWidget {
     );
   }
 
-  void _showInstructorsBottomSheet(BuildContext context, InstructorController controller) {
+  void _showInstructorsBottomSheet(
+      BuildContext context, InstructorController controller, HomeController homeController) {
+    controller.searchQuery.value = ''; // ✅ تفريغ البحث عند الفتح
+
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -133,39 +109,65 @@ class InstructorSelector extends StatelessWidget {
         borderRadius: BorderRadius.vertical(top: Radius.circular(16.r)),
       ),
       builder: (context) {
-        return Container(
-          padding: EdgeInsets.only(
-            top: 16.r,
-            left: 16.r,
-            right: 16.r,
-            bottom: MediaQuery.of(context).viewInsets.bottom + 16.r,
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                'اختر مدربة',
-                style: AppStyles.labelStyle18.copyWith(color: kOxfordBlue),
-              ),
-              SizedBox(height: 16.h),
-              ...controller.instructors.map((instructor) {
-                final name = instructor['name'] as String;
-                final details = instructor['details'] as String;
+        return Obx(() {
+          final search = controller.searchQuery.value.toLowerCase();
+          final instructors = homeController.instructorsList.where((instructor) {
+            final name = instructor.name?.toLowerCase() ?? '';
+            return name.contains(search);
+          }).toList();
 
-                final isSelected = controller.selectedInstructor.value == name;
-                return _InstructorTile(
-                  name: name,
-                  details: details,
-                  isSelected: isSelected,
-                  onTap: () {
-                    controller.selectedInstructor.value = name;
-                    Navigator.pop(context);
-                  },
-                );
-              }).toList(),
-            ],
-          ),
-        );
+          return Container(
+            padding: EdgeInsets.only(
+              top: 16.r,
+              left: 16.r,
+              right: 16.r,
+              bottom: MediaQuery.of(context).viewInsets.bottom + 16.r,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'اختر مدربة',
+                  style: AppStyles.labelStyle18.copyWith(color: kOxfordBlue),
+                ),
+                SizedBox(height: 12.h),
+                // ✅ مربع البحث
+                TextField(
+                  onChanged: (value) => controller.searchQuery.value = value,
+                  decoration: InputDecoration(
+                    hintText: 'ابحث باسم المدربة...',
+                    prefixIcon: const Icon(Icons.search),
+                    contentPadding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 12.w),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12.r),
+                      borderSide: BorderSide(color: kGraniteGray),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 16.h),
+                if (instructors.isEmpty)
+                  Text(
+                    'لا يوجد نتائج',
+                    style: AppStyles.body16.copyWith(color: kGraniteGray),
+                  )
+                else
+                  ...instructors.map((instructor) {
+                    final name = instructor.name ?? '';
+                    final isSelected = controller.selectedInstructor.value == name;
+
+                    return _InstructorTile(
+                      name: name,
+                      isSelected: isSelected,
+                      onTap: () {
+                        controller.selectedInstructor.value = name;
+                        Navigator.pop(context);
+                      },
+                    );
+                  }).toList(),
+              ],
+            ),
+          );
+        });
       },
     );
   }
@@ -173,13 +175,11 @@ class InstructorSelector extends StatelessWidget {
 
 class _InstructorTile extends StatelessWidget {
   final String name;
-  final String details;
   final bool isSelected;
   final VoidCallback onTap;
 
   const _InstructorTile({
     required this.name,
-    required this.details,
     required this.isSelected,
     required this.onTap,
   });
@@ -217,10 +217,6 @@ class _InstructorTile extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                       color: kOxfordBlue,
                     ),
-                  ),
-                  Text(
-                    details,
-                    style: AppStyles.body16.copyWith(color: kGraniteGray),
                   ),
                 ],
               ),

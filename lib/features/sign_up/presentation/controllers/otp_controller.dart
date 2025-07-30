@@ -13,6 +13,8 @@ import '../../data/repos/sign_up_repo.dart';
 class OtpController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
+  late String accountType;
+
   var otpDigits = List<String>.filled(6, "").obs;
   var isError = false.obs;
   var showError = false.obs;
@@ -25,6 +27,7 @@ class OtpController extends GetxController {
   String? phoneNumberForResend;
 
   String get otpCode => otpDigits.join();
+
   bool get isOtpComplete => !otpDigits.any((d) => d.isEmpty);
 
   @override
@@ -36,6 +39,8 @@ class OtpController extends GetxController {
       verificationId = args['verId'];
       formattedPhone = args['phone'];
       phoneNumberForResend = formattedPhone;
+      accountType = args['accountType'] ?? 'learner';
+
     } else {
       Get.snackbar("خطأ", "لم يتم توفير بيانات التحقق");
     }
@@ -122,24 +127,23 @@ class OtpController extends GetxController {
           passwordConfirmation: signUpController.password.value,
         );
 
-        final result = await signUpRepo.instructorSignUp(requestModel);
+        final result = await signUpRepo.signUp(requestModel, accountType);
 
         result.fold(
-              (failure) {
+          (failure) {
             Get.snackbar("خطأ", "فشل تسجيل الحساب: ${failure.message}");
           },
-              (data) {
+          (data) {
             Get.defaultDialog(
               title: "تم التحقق",
-              titleStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+              titleStyle: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              ),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Image.asset(
-                    Assets.imagesSuccess,
-                    width: 100,
-                    height: 100,
-                  ),
+                  Image.asset(Assets.imagesSuccess, width: 100, height: 100),
                   const SizedBox(height: 16),
                   const Text(
                     "تم إنشاء حسابك بنجاح",
@@ -150,7 +154,7 @@ class OtpController extends GetxController {
               ),
               confirm: CustomButton(
                 text: 'تسجيل الدخول',
-                onPressed: () => Get.offAll(LoginView()),
+                onPressed: () => Get.offAll(LoginView(flag: accountType)),
               ),
             );
           },
@@ -160,7 +164,10 @@ class OtpController extends GetxController {
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'session-expired') {
-        Get.snackbar("انتهت الجلسة", "رمز التحقق منتهي. أعد الإرسال وحاول مرة أخرى");
+        Get.snackbar(
+          "انتهت الجلسة",
+          "رمز التحقق منتهي. أعد الإرسال وحاول مرة أخرى",
+        );
       } else if (e.code == 'invalid-verification-code') {
         Get.snackbar("رمز خاطئ", "رمز التحقق الذي أدخلته غير صحيح");
       } else {
@@ -168,8 +175,7 @@ class OtpController extends GetxController {
       }
     } catch (e) {
       Get.snackbar("خطأ", "حدث خطأ غير متوقع: ${e.toString()}");
-    }
-    finally {
+    } finally {
       isVerifying.value = false;
     }
   }

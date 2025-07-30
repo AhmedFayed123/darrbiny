@@ -21,11 +21,34 @@ class AppStyles {
     fontFamily: Strings.kPoppins, // Font family applied here
     color: kPrimaryColor, // Default color
   );
+  static TextStyle body20Regular = TextStyle(
+    fontSize: 20,
+    fontWeight: FontWeight.w500,
+    fontFamily: Strings.kPoppins, // Font family applied here
+    color: kTrout, // Default color
+  );
+  static TextStyle body13Regular400 = TextStyle(
+    fontSize: 13,
+    fontWeight: FontWeight.w400,
+    fontFamily: Strings.kPoppins, // Font family applied here
+    color: kBlackColor, // Default color
+  );
+  static TextStyle body20Regular400 = TextStyle(
+    fontSize: 20,
+    fontWeight: FontWeight.w400,
+    fontFamily: Strings.kPoppins, // Font family applied here
+    color: kBlackColor, // Default color
+  );
   static TextStyle textStyle12regular = TextStyle(
     fontSize: 12.sp,
     fontWeight: FontWeight.w500,
     fontFamily: Strings.kPoppins, // Font family applied here
     color: kLightGrey, // Slightly faded black for normal text
+  );  static TextStyle textStyle12regular400 = TextStyle(
+    fontSize: 12.sp,
+    fontWeight: FontWeight.w400,
+    fontFamily: Strings.kPoppins, // Font family applied here
+    color: kGray400, // Slightly faded black for normal text
   );
   static TextStyle body16 = TextStyle(
     fontSize: 16,

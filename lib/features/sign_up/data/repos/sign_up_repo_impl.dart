@@ -41,12 +41,20 @@ class SignUpRepoImpl extends SignUpRepo {
   }
 
   @override
-  Future<Either<Failure, Map<String, dynamic>>> instructorSignUp(InstructorSignUpRequestModel instructorSignUpRequestModel) async{
+  Future<Either<Failure, Map<String, dynamic>>> signUp(
+      InstructorSignUpRequestModel signUpRequestModel,
+      String accountType,
+      ) async {
     try {
-      final Response response = await DioHelper.postDataWithoutToken(
-        url: AppEndpoints.instructorsRegister,
-        data: instructorSignUpRequestModel.toJson(),
+      final String endpoint = accountType == 'instructor'
+          ? AppEndpoints.instructorsRegister
+          : AppEndpoints.learnersRegister;
+
+      final response = await DioHelper.postDataWithoutToken(
+        url: endpoint,
+        data: signUpRequestModel.toJson(),
       );
+
       if (response.data is Map<String, dynamic>) {
         return right(response.data as Map<String, dynamic>);
       } else {
@@ -58,4 +66,6 @@ class SignUpRepoImpl extends SignUpRepo {
       return left(ServerFailure(e.toString()));
     }
   }
+
+
 }

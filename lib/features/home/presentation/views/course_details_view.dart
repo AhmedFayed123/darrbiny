@@ -6,6 +6,8 @@ import 'package:get/get.dart';
 
 import '../../../../core/components/widgets/custom_app_bar.dart';
 import '../../../../core/components/widgets/custom_button.dart';
+import '../../../../core/services/storage_service.dart';
+import '../../../sign_up/presentation/views/sign_up_view.dart';
 import '../../data/models/packages_list_model/Packages.dart';
 import 'more_details_view.dart';
 
@@ -27,9 +29,30 @@ class CourseDetailsView extends StatelessWidget {
               const Spacer(),
               CustomButton(
                 text: 'استمرار',
-                onPressed: () {
-                  Get.to(() => MoreDetailsView(learnerId: 1, packageId: package.id??1, totalPrice: package.price??"",));
-                },
+                  onPressed: () async {
+                    final storage = StorageService();
+                    final accountType = await storage.checkLoginStatus();
+
+                    if (accountType == 'learner') {
+                      final learnerId = await storage.getUserId();
+                      if (learnerId != null) {
+                        Get.to(() => MoreDetailsView(
+                          learnerId: int.parse(learnerId),
+                          packageId: package.id ?? 1,
+                          totalPrice: package.price ?? "",
+                        ));
+                      }
+                    } else {
+                      final learnerId = await Get.to(() => const SignUpView(flag: 'learner'));
+                      if (learnerId != null) {
+                        Get.to(() => MoreDetailsView(
+                          learnerId: learnerId,
+                          packageId: package.id ?? 1,
+                          totalPrice: package.price ?? "",
+                        ));
+                      }
+                    }
+                  }
               ),
               SizedBox(height: 32.h),
             ],

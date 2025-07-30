@@ -1,13 +1,88 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class StorageService {
-  static const String _keyUserLoggedIn = 'user_logged_in';
-  static const String _keyUserName = 'user_name';
-  static const String _keyUserEmail = 'user_email';
+  static const String _keyIsLoggedIn = 'is_logged_in';
+  static const String _keyAccountType = 'account_type';
   static const String _keyFirstLaunch = 'firstLaunch';
-  static const String _keyToken = 'user_token';
-  static const String _keyUserId = 'user_id';
-  static const String _keyLanguageCode  = 'language_code';
+  static const String _keyLanguageCode = 'language_code';
+
+  /// Save data by key (generic use)
+  Future<void> saveData(String key, String value) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(key, value);
+  }
+
+  Future<String?> getData(String key) async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(key);
+  }
+
+  Future<void> removeData(String key) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(key);
+  }
+
+  /// Save user login session
+  Future<void> saveLoginSession({
+    required String accountType,
+    required String token,
+    required String userId,
+    required String userName,
+    required String userEmail,
+  }) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    final tokenKey = accountType == 'instructor' ? 'instructor_token' : 'learner_token';
+    final idKey = accountType == 'instructor' ? 'instructor_id' : 'learner_id';
+    final nameKey = accountType == 'instructor' ? 'instructor_name' : 'learner_name';
+    final emailKey = accountType == 'instructor' ? 'instructor_email' : 'learner_email';
+
+    await prefs.setBool(_keyIsLoggedIn, true);
+    await prefs.setString(_keyAccountType, accountType);
+    await prefs.setString(tokenKey, token);
+    await prefs.setString(idKey, userId);
+    await prefs.setString(nameKey, userName);
+    await prefs.setString(emailKey, userEmail);
+  }
+
+  Future<bool> isLoggedIn() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(_keyIsLoggedIn) ?? false;
+  }
+
+  Future<String?> getAccountType() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(_keyAccountType);
+  }
+
+  Future<String?> getToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    final accountType = await getAccountType();
+    final tokenKey = accountType == 'instructor' ? 'instructor_token' : 'learner_token';
+    return prefs.getString(tokenKey);
+  }
+
+  Future<String?> getUserId() async {
+    final prefs = await SharedPreferences.getInstance();
+    final accountType = await getAccountType();
+    final idKey = accountType == 'instructor' ? 'instructor_id' : 'learner_id';
+    return prefs.getString(idKey);
+  }
+
+  Future<void> logOut() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+  }
+
+  Future<void> setFirstLaunch(bool value) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_keyFirstLaunch, value);
+  }
+
+  Future<bool> isFirstLaunch() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(_keyFirstLaunch) ?? true;
+  }
 
   Future<void> saveLanguage(String langCode) async {
     final prefs = await SharedPreferences.getInstance();
@@ -18,82 +93,17 @@ class StorageService {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString(_keyLanguageCode);
   }
-  // تخزين قيمة في SharedPreferences
-  Future<void> saveData(String key, String value) async {
+  Future<String?> checkLoginStatus() async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(key, value);
+    final accountType = prefs.getString(_keyAccountType);
+    final token = accountType == 'instructor'
+        ? prefs.getString('instructor_token')
+        : prefs.getString('learner_token');
+
+    if (token != null && token.isNotEmpty) {
+      return accountType;
+    }
+    return null;
   }
 
-  // استرجاع قيمة من SharedPreferences
-  Future<String?> getData(String key) async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getString(key);
-  }
-
-  // حذف قيمة من SharedPreferences
-  Future<void> removeData(String key) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.remove(key);
-  }
-
-  // حفظ بيانات الجلسة (المستخدم)
-  Future<void> saveUserSession({
-    required int userId,
-    required String userName,
-    required String userEmail,
-    required String token,
-  }) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool(_keyUserLoggedIn, true);
-    await prefs.setInt(_keyUserId, userId);
-    await prefs.setString(_keyUserName, userName);
-    await prefs.setString(_keyUserEmail, userEmail);
-    await prefs.setString(_keyToken, token);
-  }
-
-  // استرجاع بيانات المستخدم
-  Future<Map<String, String?>> getUserData() async {
-    final prefs = await SharedPreferences.getInstance();
-    return {
-      'userName': prefs.getString(_keyUserName) ?? '',
-      'userEmail': prefs.getString(_keyUserEmail) ?? '',
-      'token': prefs.getString(_keyToken) ?? '',
-    };
-  }
-
-  // التحقق من حالة تسجيل الدخول
-  Future<bool> isUserLoggedIn() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getBool(_keyUserLoggedIn) ?? false;
-  }
-
-  // استرجاع التوكن
-  Future<String?> getToken() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getString(_keyToken);
-  }
-
-  Future<int?> getId() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getInt(_keyUserId);
-  }
-
-  // تسجيل الخروج
-// تسجيل الخروج
-  Future<void> logOut() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.clear();
-  }
-
-  // تخزين حالة الإطلاق الأول
-  Future<void> setFirstLaunch(bool value) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool(_keyFirstLaunch, value);
-  }
-
-  // استرجاع حالة الإطلاق الأول
-  Future<bool> isFirstLaunch() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getBool(_keyFirstLaunch) ?? true;
-  }
 }

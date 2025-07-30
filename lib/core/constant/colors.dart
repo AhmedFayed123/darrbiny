@@ -18,6 +18,7 @@ const Color kMostlyWhite = Color(0xFFF2F0FF);
 const Color kLemonChiffon = Color(0xFFFDF7C5);
 const Color kChiragMehta = Color(0xFFE1DBFD);
 const Color kGraniteGray = Color(0xFF666666);
+const Color kTrout = Color(0xFF4E5051);
 
 /// Background Colors
 const Color kBackgroundColor = Color(0xFFFFFFFF);

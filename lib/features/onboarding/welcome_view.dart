@@ -1,10 +1,12 @@
 
+import 'package:darrbiny/features/instructor_home/presentation/views/instructor_home_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../core/components/widgets/custom_button.dart';
 import '../../core/constant/colors.dart';
+import '../../core/services/storage_service.dart';
 import '../home/presentation/views/home_view.dart';
 import '../sign_up/presentation/views/sign_up_view.dart';
 
@@ -22,9 +24,17 @@ class WelcomeView extends StatelessWidget {
             children: [
               CustomButton(
                 text: 'مدرب',
-                onPressed: () {
-                  Get.offAll(SignUpView());
-                },
+                  onPressed: () async {
+                    final storage = StorageService();
+                    final accountType = await storage.checkLoginStatus();
+
+                    if (accountType == 'instructor') {
+                      Get.offAll(InstructorHomeView());
+                    } else {
+                      Get.offAll(SignUpView(flag: 'instructor'));
+                    }
+                  }
+
               ),
               SizedBox(height: 16.h),
               CustomButton(

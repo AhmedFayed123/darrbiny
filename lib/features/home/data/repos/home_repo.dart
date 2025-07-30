@@ -11,5 +11,5 @@ abstract class HomeRepo {
   Future<Either<Failure, PackagesListModel>> getPackagesList();
   Future<Either<Failure, List<InstructorModel>>> getInstructorsList();
   Future<Either<Failure, SinglePackageModel>> getSinglePackage(int id);
-  Future<Either<Failure, RequestModel>> postRequest(RequestRequest requestRequest);
+  Future<Either<Failure, RequestModel>> postRequest(BookingRequest requestRequest);
 }

@@ -1,6 +1,8 @@
 
 import 'package:darrbiny/features/login/data/repos/login_repo.dart';
 import 'package:darrbiny/features/login/data/repos/login_repo_impl.dart';
+import 'package:darrbiny/features/profile/data/repos/profile_repo.dart';
+import 'package:darrbiny/features/profile/data/repos/profile_repo_impl.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -38,6 +40,7 @@ class ServiceLocator {
     sl.registerLazySingleton<StorageService>(() => StorageService());
     sl.registerLazySingleton<HomeRepo>(() => HomeRepoImpl());
     sl.registerLazySingleton<InstructorHomeRepo>(() => InstructorHomeRepoImpl());
+    sl.registerLazySingleton<ProfileRepo>(() => ProfileRepoImpl());
     // sl.registerLazySingleton<LoginRepo>(() => LoginRepoImpl());
     // sl.registerLazySingleton<SignupRepo>(() => SignupRepoImpl());
     // sl.registerLazySingleton<MarketRepo>(() => MarketRepoImpl());

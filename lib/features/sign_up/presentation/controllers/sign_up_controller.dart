@@ -6,6 +6,7 @@ class SignUpController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   var isLoading = false.obs;
+  late String accountType;
 
   var fullName = ''.obs;
   var phoneNumber = ''.obs;
@@ -52,10 +53,11 @@ class SignUpController extends GetxController {
           verificationId.value = verId;
           isLoading.value = false;
           Get.to(() => OtpView(), arguments: {
-            'verId': verId,
+            'verId': verificationId.value,
             'phone': phoneNumber.value,
+            'accountType': accountType,
           });
-        },
+          },
         codeAutoRetrievalTimeout: (String verId) {
           verificationId.value = verId;
         },

@@ -17,17 +17,17 @@ class CustomAppBar extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        InkWell(onTap: ()=>Get.back(),child: Icon(Icons.arrow_back,size: 34,)),
+        InkWell(onTap: ()=>Get.back(),child: Icon(Icons.arrow_back,size: 24,)),
         Text(title,style: AppStyles.labelStyle.copyWith(color: kSecondaryColor),),
         Container(
-          width: 48.w,
-          height: 48.h,
+          width: 42.w,
+          height: 42.h,
           decoration: BoxDecoration(
             color: kWhiteColor,
             shape: BoxShape.circle,
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.2),
+                color: Colors.black.withOpacity(0.1),
                 blurRadius: 8,
                 offset: const Offset(0, 4),
               ),

@@ -63,12 +63,13 @@ class HomeRepoImpl extends HomeRepo{
   }
 
   @override
-  Future<Either<Failure, RequestModel>> postRequest(RequestRequest requestRequest) async{
+  Future<Either<Failure, RequestModel>> postRequest(BookingRequest requestRequest) async{
     try {
       final Response response = await DioHelper.postDataWithoutToken(
         url: AppEndpoints.requests,
         data: requestRequest.toJson(),
       );
+      print("Request Data: ${requestRequest.toJson()}");
       return right(RequestModel.fromJson(response.data));
     } on DioException catch (e) {
       return left(ServerFailure.fromDioError(e));

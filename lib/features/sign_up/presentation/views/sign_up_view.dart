@@ -13,11 +13,13 @@ import '../../../login/presentation/views/login_view.dart';
 import '../controllers/sign_up_controller.dart';
 
 class SignUpView extends StatelessWidget {
-  const SignUpView({super.key});
+  const SignUpView({super.key, required this.flag});
 
+  final String flag;
   @override
   Widget build(BuildContext context) {
     final signupController = Get.put(SignUpController());
+    signupController.accountType = flag;
 
     final formKey = GlobalKey<FormState>();
     final nameController = TextEditingController();
@@ -126,7 +128,7 @@ class SignUpView extends StatelessWidget {
                       fontWeight: FontWeight.w500,
                     ),
                     onPressed: () {
-                      Get.offAll(() => const LoginView());
+                      Get.offAll(() => LoginView(flag: flag,));
                     },
                   ),
                 ],

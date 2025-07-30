@@ -79,23 +79,30 @@ class HomeController extends GetxController {
     );
   }
 
-  Future<void> submitRequest(RequestRequest requestRequest) async {
+  Future<void> submitRequest(BookingRequest requestRequest) async {
     isLoading.value = true;
     errorMessage.value = '';
     try {
+      print("Sending request: ${requestRequest.toJson()}");
       final result = await homeRepo.postRequest(requestRequest);
+      print("Raw response: $result");
+
       result.fold(
             (failure) {
           errorMessage.value = failure.message;
           print("❌ Failed to post request: ${failure.message}");
+          print("Full failure details: $failure");
         },
             (data) {
+          print("Response data: ${data.toJson()}"); // Add this line
           submittedRequest.value = data;
           print("✅ Request submitted successfully: ${data.data!.id}");
         },
       );
-    } catch (e) {
+    } catch (e, stack) {
       errorMessage.value = 'Exception: ${e.toString()}';
+      print("Full exception: $e");
+      print("Stack trace: $stack");
     } finally {
       isLoading.value = false;
     }

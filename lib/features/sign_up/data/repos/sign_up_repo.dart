@@ -12,6 +12,6 @@ abstract class SignUpRepo {
     required File nationalIdImage,
     required File carImage,
   });
-  Future<Either<Failure, Map<String, dynamic>>> instructorSignUp(InstructorSignUpRequestModel instructorSignUpRequestModel);
+  Future<Either<Failure, Map<String, dynamic>>> signUp(InstructorSignUpRequestModel instructorSignUpRequestModel,String accountType);
 
 }

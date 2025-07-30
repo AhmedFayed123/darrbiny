@@ -12,11 +12,14 @@ import '../../../sign_up/presentation/views/sign_up_view.dart';
 import '../controller/login_controller.dart';
 
 class LoginView extends StatelessWidget {
-  const LoginView({super.key});
+  const LoginView({super.key, required this.flag});
+  final String flag;
 
   @override
   Widget build(BuildContext context) {
     final loginController = Get.put(LoginController());
+    loginController.accountType = flag;
+
     final formKey = GlobalKey<FormState>();
     final phoneController = TextEditingController();
     final passwordController = TextEditingController();
@@ -81,6 +84,8 @@ class LoginView extends StatelessWidget {
                     onPressed: () {
                       if (formKey.currentState!.validate()) {
                         loginController.loginWithApi();
+                        print('accountType kkk');
+                        print(loginController.accountType);
                       }
                     },
                   )),
@@ -94,7 +99,7 @@ class LoginView extends StatelessWidget {
                       fontWeight: FontWeight.w500,
                     ),
                     onPressed: () {
-                      Get.offAll(const SignUpView());
+                      Get.offAll(SignUpView(flag: flag,));
                     },
                   ),
                 ],

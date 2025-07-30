@@ -12,16 +12,20 @@ class LoginRepoImpl extends LoginRepo {
   Future<Either<Failure, Map<String, dynamic>>> login({
     required String phone,
     required String password,
+    required String accountType,
   }) async {
     try {
-      final Response response = await DioHelper.postDataWithoutToken(
-        url: AppEndpoints.login,
-        data: {
-          'phone': phone,
-          'password': password,
-        },
-      );
+      final String endpoint =
+          accountType == 'instructor'
+              ? AppEndpoints.instructorLogin
+              : AppEndpoints.learnerLogin;
 
+      final response = await DioHelper.postDataWithoutToken(
+        url: endpoint,
+        data: {'phone': phone, 'password': password},
+      );
+      print("endpoint");
+      print(endpoint);
       if (response.data is Map<String, dynamic>) {
         return right(response.data as Map<String, dynamic>);
       } else {

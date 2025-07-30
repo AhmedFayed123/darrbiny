@@ -61,37 +61,20 @@ class MoreDetailsView extends StatelessWidget {
                 CustomButton(
                   text: 'استمرار',
                   onPressed: () async {
-                    double? parsedPrice = double.tryParse(totalPrice);
-
-                    if (parsedPrice == null) {
-                      Get.snackbar(
-                        "خطأ",
-                        "سعر غير صحيح",
-                        backgroundColor: Colors.red.withOpacity(0.8),
-                        colorText: Colors.white,
-                      );
-                      return;
-                    }
-
-                    final request = RequestRequest(
+                    final request = BookingRequest(
                       learnerId: learnerId,
-                      instructorId:
-                          instructorController.selectedInstructor.value.isEmpty
-                              ? null
-                              : instructorController.selectedInstructor.value,
+                      instructorId: instructorController.selectedInstructorId??0,
                       packageId: packageId,
-                      requestedStartDate: dateController.selectedDate.value,
-                      locationCity:
-                          locationController.cityController.value.text,
-                      locationArea:
-                          locationController.areaController.value.text,
-                      hasLearnerCar:
-                          carController.selectedOption.value == 'لدي سيارة',
-                      requiresTransport:
-                          pickupController.selectedOption.value == 'نعم',
-                      totalPrice: parsedPrice,
-                      // Use the parsed int value here
-                      type: "general",
+                      startDate: dateController.selectedDate.value,
+                      locationCity: locationController.cityController.value.text,
+                      locationArea: locationController.areaController.value.text,
+                      hasLearnerCar: carController.selectedOption.value == 'لدي سيارة',
+                      requiresTransport: pickupController.selectedOption.value == 'نعم',
+                      totalPrice: totalPrice.toString(),
+                      type: instructorController.mode.value == 'اختيار مدربة' &&
+                          instructorController.selectedInstructor.value.isNotEmpty
+                          ? 'private'
+                          : 'general',
                       notes: notesController.notesController.value.text,
                     );
 
