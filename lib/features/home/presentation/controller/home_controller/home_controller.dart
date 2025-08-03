@@ -3,8 +3,8 @@ import '../../../../../core/services/service_locator.dart';
 import '../../../data/models/instructors_list_model/Instructors_list_model.dart';
 import '../../../data/models/packages_list_model/Packages.dart';
 
-import '../../../data/models/request_model/Request_model.dart';
-import '../../../data/models/request_model/request_request/Request_request.dart';
+import '../../../data/models/request_model/booking_model/Booking_model.dart';
+import '../../../data/models/request_model/booking_request_model/Booking_request_model.dart';
 import '../../../data/repos/home_repo.dart';
 
 class HomeController extends GetxController {
@@ -16,7 +16,7 @@ class HomeController extends GetxController {
   var selectedPackage = Rxn<Packages>();
   var errorMessage = ''.obs;
 
-  var submittedRequest = Rxn<RequestModel>();
+  var submittedRequest = Rxn<BookingModel>();
 
   @override
   void onInit() {
@@ -79,7 +79,7 @@ class HomeController extends GetxController {
     );
   }
 
-  Future<void> submitRequest(BookingRequest requestRequest) async {
+  Future<void> submitRequest(BookingRequestModel requestRequest) async {
     isLoading.value = true;
     errorMessage.value = '';
     try {
@@ -94,7 +94,7 @@ class HomeController extends GetxController {
           print("Full failure details: $failure");
         },
             (data) {
-          print("Response data: ${data.toJson()}"); // Add this line
+          print("Response data: $data"); // Add this line
           submittedRequest.value = data;
           print("✅ Request submitted successfully: ${data.data!.id}");
         },

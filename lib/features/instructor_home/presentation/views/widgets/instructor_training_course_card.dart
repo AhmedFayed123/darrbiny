@@ -31,7 +31,7 @@ class InstructorTrainingCourseCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(24),
@@ -39,12 +39,15 @@ class InstructorTrainingCourseCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Header
           Container(
             padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
-
             decoration: BoxDecoration(
               color: kSecondaryColor.withOpacity(.15),
-              borderRadius: BorderRadius.only(topLeft: Radius.circular(10.r),topRight: Radius.circular(10.r)),
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(10.r),
+                topRight: Radius.circular(10.r),
+              ),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -57,7 +60,8 @@ class InstructorTrainingCourseCard extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
+                  padding:
+                  EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
                   decoration: BoxDecoration(
                     color: const Color(0xFFFFF1B2),
                     borderRadius: BorderRadius.circular(10),
@@ -73,7 +77,10 @@ class InstructorTrainingCourseCard extends StatelessWidget {
               ],
             ),
           ),
+
           SizedBox(height: 16.h),
+
+          // Trainer Info
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -83,15 +90,20 @@ class InstructorTrainingCourseCard extends StatelessWidget {
                     radius: 20,
                     backgroundImage: AssetImage(trainerImageUrl),
                   ),
-                  const SizedBox(width: 8),
+                  SizedBox(width: 8.w),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        trainerName,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 14,
+                      SizedBox(
+                        width: 140.w,
+                        child: Text(
+                          trainerName,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                       const SizedBox(height: 4),
@@ -99,7 +111,9 @@ class InstructorTrainingCourseCard extends StatelessWidget {
                         children: List.generate(
                           5,
                               (index) => Icon(
-                            index < rating ? Icons.star : Icons.star_border,
+                            index < rating
+                                ? Icons.star
+                                : Icons.star_border_outlined,
                             color: Colors.amber,
                             size: 16,
                           ),
@@ -110,7 +124,8 @@ class InstructorTrainingCourseCard extends StatelessWidget {
                 ],
               ),
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
+                padding:
+                EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
                 decoration: BoxDecoration(
                   border: Border.all(color: const Color(0xFF8B6EF6)),
                   borderRadius: BorderRadius.circular(24),
@@ -125,22 +140,20 @@ class InstructorTrainingCourseCard extends StatelessWidget {
                         fontSize: 12,
                       ),
                     ),
-                    SizedBox(width: 6.w,),
-                    const Icon(Icons.location_on_outlined, color: kSecondaryColor),
-
+                    SizedBox(width: 6.w),
+                    const Icon(Icons.location_on_outlined,
+                        color: kSecondaryColor),
                   ],
                 ),
               ),
-
             ],
           ),
 
           SizedBox(height: 16.h),
 
-
-          // تفاصيل التدريب
+          // Training Details
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
             width: double.infinity,
             decoration: BoxDecoration(
               border: Border.all(color: kSecondaryColor),
@@ -148,8 +161,8 @@ class InstructorTrainingCourseCard extends StatelessWidget {
             ),
             child: Column(
               children: [
-                _buildRow('التاريخ ( من )', fromDate),
-                _buildRow('التاريخ ( الى )', toDate),
+                _buildRow('التاريخ (من)', fromDate),
+                _buildRow('التاريخ (إلى)', toDate),
                 _buildRow('مكان التدريب', location),
                 _buildRow('سيارة المدربة', trainerCar),
                 _buildRow('طلب نقل المتدرب', transportRequest),
@@ -160,7 +173,7 @@ class InstructorTrainingCourseCard extends StatelessWidget {
 
           SizedBox(height: 16.h),
 
-          // العرض + السعر
+          // عرض سعر
           Container(
             decoration: BoxDecoration(
               color: Colors.transparent,
@@ -170,7 +183,7 @@ class InstructorTrainingCourseCard extends StatelessWidget {
                 width: 1.2,
               ),
             ),
-            padding: EdgeInsets.symmetric(horizontal: 12.w,vertical: 4.h),
+            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
             child: Row(
               children: [
                 Expanded(
@@ -190,9 +203,9 @@ class InstructorTrainingCourseCard extends StatelessWidget {
                   child: TextButton(
                     onPressed: () {},
                     style: TextButton.styleFrom(
-                      padding: EdgeInsets.symmetric(horizontal: 20.w,vertical: 8.h),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 20.w, vertical: 8.h),
                       foregroundColor: kSecondaryColor,
-                      minimumSize: const Size(0, 30),
                       tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                     ),
                     child: const Text(
@@ -214,23 +227,32 @@ class InstructorTrainingCourseCard extends StatelessWidget {
 
   Widget _buildRow(String title, String value, {bool isPrice = false}) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6),
+      padding: EdgeInsets.symmetric(vertical: 6.h),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            title,
-            style: const TextStyle(
-              color: Color(0xFF999999),
-              fontSize: 13,
+          Expanded(
+            child: Text(
+              title,
+              style: const TextStyle(
+                color: Color(0xFF999999),
+                fontSize: 13,
+              ),
             ),
           ),
-          Text(
-            value,
-            style: TextStyle(
-              fontWeight: isPrice ? FontWeight.bold : FontWeight.normal,
-              fontSize: isPrice ? 16 : 14,
-              color: isPrice ? const Color(0xFF8B6EF6) : Colors.black,
+          SizedBox(width: 8.w),
+          Expanded(
+            flex: 2,
+            child: Text(
+              value,
+              textAlign: TextAlign.end,
+              style: TextStyle(
+                fontWeight: isPrice ? FontWeight.bold : FontWeight.normal,
+                fontSize: isPrice ? 16 : 14,
+                color: isPrice ? const Color(0xFF8B6EF6) : Colors.black,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
           ),
         ],

@@ -17,7 +17,7 @@ class HomeView extends StatelessWidget {
           children: controller.pages,
         ),
       ),
-      bottomNavigationBar: const FancyBottomNavBar(),
+      bottomNavigationBar: FancyBottomNavBar(controller: controller,),
     );
   }
 }

@@ -1,56 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 import '../../../../core/components/widgets/custom_app_bar.dart';
 import '../../../../core/constant/colors.dart';
 import '../../../../generated/assets.dart';
 import '../../../home/presentation/views/widgets/search_bar_widget.dart';
+import '../../data/models/conversations_model/Conversations_model.dart';
+import '../controller/chat_controller.dart';
 
 class MessageView extends StatelessWidget {
-  const MessageView({super.key});
+  MessageView({super.key});
 
-  final List<Map<String, dynamic>> _messages = const [
-    {
-      'name': 'هاله غالي',
-      'message': 'مرحباً هناك ، كيف الحال ؟',
-      'time': 'ساعة',
-      'image': Assets.imagesGirl,
-      'unread': false,
-      'online': true,
-    },
-    {
-      'name': 'هيه محمد',
-      'message': 'مرحباً هناك ، كيف الحال ؟',
-      'time': 'ساعة',
-      'image': Assets.imagesGirl,
-      'unread': true,
-      'online': true,
-    },
-    {
-      'name': 'رغده علي',
-      'message': 'مرحباً هناك ، كيف الحال ؟',
-      'time': 'ساعة',
-      'image': Assets.imagesGirl,
-      'unread': true,
-      'online': true,
-    },
-    {
-      'name': 'ساره احمد',
-      'message': 'مرحباً هناك ، كيف الحال ؟',
-      'time': 'ساعة',
-      'image': Assets.imagesGirl,
-      'unread': true,
-      'online': true,
-    },
-    {
-      'name': 'دعاء احمد',
-      'message': 'مرحباً هناك ، كيف الحال ؟',
-      'time': 'ساعة',
-      'image': Assets.imagesGirl,
-      'unread': true,
-      'online': true,
-    },
-  ];
+  final ChatController controller = Get.put(ChatController());
 
   @override
   Widget build(BuildContext context) {
@@ -64,30 +26,47 @@ class MessageView extends StatelessWidget {
               const SearchBarWidget(),
               SizedBox(height: 12.h),
               Expanded(
-                child: ListView.separated(
-                  itemCount: _messages.length,
-                  separatorBuilder: (_, __) => SizedBox(height: 8.h),
-                  itemBuilder: (context, index) {
-                    final msg = _messages[index];
-                    return Dismissible(
-                      key: UniqueKey(),
-                      direction: DismissDirection.endToStart,
-                      background: Container(
-                        alignment: Alignment.centerRight,
-                        padding: EdgeInsets.symmetric(horizontal: 20.w),
-                        decoration: BoxDecoration(
-                          color: Colors.redAccent,
-                          borderRadius: BorderRadius.circular(12.r),
+                child: Obx(() {
+                  if (controller.isLoading.value) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+
+                  if (controller.errorMessage.isNotEmpty) {
+                    return Center(child: Text(controller.errorMessage.value));
+                  }
+
+                  final messages = controller.conversationsList;
+
+                  if (messages.isEmpty) {
+                    return const Center(child: Text("لا توجد رسائل."));
+                  }
+
+                  return ListView.separated(
+                    itemCount: messages.length,
+                    separatorBuilder: (_, __) => SizedBox(height: 8.h),
+                    itemBuilder: (context, index) {
+                      final msg = messages[index];
+                      return Dismissible(
+                        key: UniqueKey(),
+                        direction: DismissDirection.endToStart,
+                        background: Container(
+                          alignment: Alignment.centerRight,
+                          padding: EdgeInsets.symmetric(horizontal: 20.w),
+                          decoration: BoxDecoration(
+                            color: Colors.redAccent,
+                            borderRadius: BorderRadius.circular(12.r),
+                          ),
+                          child: const Icon(Icons.delete, color: Colors.white),
                         ),
-                        child: const Icon(Icons.delete, color: Colors.white),
-                      ),
-                      child: _buildMessageItem(msg),
-                      onDismissed: (direction) {
-                        // هنا تقدر تحذف الرسالة من المصدر الفعلي
-                      },
-                    );
-                  },
-                ),
+                        child: _buildMessageItem(msg),
+                        onDismissed: (direction) {
+                          controller.conversationsList.removeAt(index);
+                          // مكن تبعت هنا API لحذف المحادثة
+                        },
+                      );
+                    },
+                  );
+                }),
               ),
             ],
           ),
@@ -96,7 +75,7 @@ class MessageView extends StatelessWidget {
     );
   }
 
-  Widget _buildMessageItem(Map<String, dynamic> msg) {
+  Widget _buildMessageItem(ConversationsModel msg) {
     return Container(
       padding: EdgeInsets.all(12.w),
       decoration: BoxDecoration(
@@ -109,9 +88,9 @@ class MessageView extends StatelessWidget {
             children: [
               CircleAvatar(
                 radius: 24.r,
-                backgroundImage: AssetImage(msg['image']),
+                backgroundImage: AssetImage(Assets.imagesGirl),
               ),
-              if (msg['online'])
+              if (true) // ممكن تعدلها حسب الحالة الحقيقية للـ online
                 Positioned(
                   bottom: 0,
                   right: 0,
@@ -134,20 +113,21 @@ class MessageView extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Text(
-                      msg['name'],
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14.sp,
+                    Expanded(
+                      child: Text(
+                        msg.sender?.name ?? '',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14.sp,
+                        ),
                       ),
                     ),
-                    if (msg['unread']) ...[
-                      SizedBox(width: 6.w),
+                    if ((msg.isRead ?? 1) == 0)
                       Container(
                         width: 18.w,
                         height: 18.h,
                         alignment: Alignment.center,
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           color: kPrimaryColor,
                           shape: BoxShape.circle,
                         ),
@@ -156,13 +136,14 @@ class MessageView extends StatelessWidget {
                           style: TextStyle(color: Colors.white, fontSize: 10.sp),
                         ),
                       ),
-                    ],
                   ],
                 ),
                 SizedBox(height: 4.h),
                 Text(
-                  msg['message'],
+                  msg.message ?? '',
                   style: TextStyle(fontSize: 12.sp, color: Colors.grey),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ],
             ),
@@ -172,7 +153,7 @@ class MessageView extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(
-                msg['time'],
+                msg.createdAt?.substring(11, 16) ?? '',
                 style: TextStyle(fontSize: 12.sp, color: Colors.grey),
               ),
               SizedBox(height: 4.h),

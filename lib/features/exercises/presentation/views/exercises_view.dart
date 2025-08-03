@@ -1,5 +1,6 @@
-import 'package:darrbiny/features/exercises/presentation/views/widgets/active_course_card.dart';
-import 'package:darrbiny/generated/assets.dart';
+import 'package:darrbiny/features/exercises/presentation/views/widgets/accepted_exercises_list.dart';
+import 'package:darrbiny/features/exercises/presentation/views/widgets/completed_list.dart';
+import 'package:darrbiny/features/exercises/presentation/views/widgets/pending_exercises_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/components/widgets/custom_app_bar.dart';
@@ -20,15 +21,15 @@ class ExercisesView extends StatelessWidget {
               children: [
                 const CustomAppBar(title: 'الاشتراكات'),
                 SizedBox(height: 24.h),
-                _CustomTabBar(),
+                CustomTabBar(tabText1: 'نشطة', tabText2: 'بالنتظار العروض', tabText3: 'المكتملة',),
                 SizedBox(height: 24.h),
                 SizedBox(
-                  height: 300.h,
+                  height: 490.h,
                   child: TabBarView(
                     children: [
-                      ActiveCourseCard(duration: '5 ايام ( 10 ساعات', learnerImageUrl: Assets.imagesGirl, learnerName: 'ساره احمد', rating: 3, date: '24 \\ 12 \\ 2025', price: 1000, time: '10 صباحاً',),
-                      Center(child: Text('بالانتظار')),
-                      Center(child: Text('المكتملة')),
+                      AcceptedExercisesList(),
+                      PendingExercisesList(),
+                      CompletedList(),
                     ],
                   ),
                 ),
@@ -41,7 +42,12 @@ class ExercisesView extends StatelessWidget {
   }
 }
 
-class _CustomTabBar extends StatelessWidget {
+class CustomTabBar extends StatelessWidget {
+  const CustomTabBar({super.key, required this.tabText1, required this.tabText2, required this.tabText3});
+
+  final String tabText1;
+  final String tabText2;
+  final String tabText3;
   @override
   Widget build(BuildContext context) {
     return Theme(
@@ -70,10 +76,10 @@ class _CustomTabBar extends StatelessWidget {
           labelColor: Colors.black,
           unselectedLabelColor: const Color(0xFF9B9B9B),
           indicatorSize: TabBarIndicatorSize.tab,
-          tabs: const [
-            Tab(text: 'نشطة'),
-            Tab(text: 'بالانتظار العروض'),
-            Tab(text: 'المكتملة'),
+          tabs:  [
+            Tab(text: tabText1),
+            Tab(text: tabText2),
+            Tab(text: tabText3),
           ],
         ),
       ),

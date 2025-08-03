@@ -12,6 +12,7 @@ import '../../../../home/presentation/views/widgets/time_line_steps.dart';
 import '../../../../home/presentation/views/widgets/video_thumbnail_widget.dart';
 import '../../controller/instructor_home_controller.dart';
 import 'instructor_training_course_card.dart';
+import 'instructor_training_list.dart';
 
 class InstructorHomeViewBody extends StatelessWidget {
   const InstructorHomeViewBody({super.key});
@@ -44,13 +45,13 @@ class InstructorHomeViewBody extends StatelessWidget {
                 CustomSeeAllRow(
                   title: 'الطلبات الجديدة',
                   allTitle: 'عرض المزيد',
-                  onPressed: () {},
+                  onPressed: () {Get.to(InstructorTrainingList());},
                   isSeeAll: true,
                 ),
                 ListView.separated(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                  itemCount: dataList.length,
+                  itemCount: dataList.length > 3 ? 3 : dataList.length, // ✅ هنا التعديل
                   separatorBuilder: (_, __) => SizedBox(height: 12.h),
                   itemBuilder: (context, index) {
                     final item = dataList[index];
@@ -65,8 +66,7 @@ class InstructorHomeViewBody extends StatelessWidget {
                       transportRequest: item.requiresTransport == true ? 'نعم' : 'لا',
                       price: int.tryParse(item.totalPrice?.split('.').first ?? '0') ?? 0,
                       duration: item.type ?? '',
-                    )
-                    ;
+                    );
                   },
                 ),
                 SizedBox(height: 24.h),

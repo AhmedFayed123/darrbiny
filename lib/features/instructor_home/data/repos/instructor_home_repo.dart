@@ -4,6 +4,6 @@ import 'package:dartz/dartz.dart';
 import '../../../../core/errors/server_failures.dart';
 
 abstract class InstructorHomeRepo {
-  Future<Either<Failure, InstructorHomeListModel>> getInstructorHomeList(int id);
+  Future<Either<Failure, InstructorHomeListModel>> getInstructorHomeList();
 
 }

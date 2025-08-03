@@ -1,10 +1,10 @@
 import 'Data.dart';
 
-class RequestModel {
-  RequestModel({
+class BookingModel {
+  BookingModel({
       this.data,});
 
-  RequestModel.fromJson(dynamic json) {
+  BookingModel.fromJson(dynamic json) {
     data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
   Data? data;

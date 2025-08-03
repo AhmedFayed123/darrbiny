@@ -6,16 +6,15 @@ import 'package:dio/dio.dart';
 
 import '../../../../core/constant/app_endpoints.dart';
 import '../../../../core/network/dio_helper/dio_helper.dart';
+import '../../../../core/services/storage_service.dart';
 
 class InstructorHomeRepoImpl extends InstructorHomeRepo {
   @override
-  Future<Either<Failure, InstructorHomeListModel>> getInstructorHomeList(
-    int id,
-  ) async {
+  Future<Either<Failure, InstructorHomeListModel>> getInstructorHomeList() async {
     try {
       final Response response = await DioHelper.postDataWithoutToken(
         url: AppEndpoints.instructorsHomeList,
-        data: {"instructor_id": id},
+        data: {"instructor_id": await StorageService().getUserId()},
       );
       return right(InstructorHomeListModel.fromJson(response.data));
     } on DioException catch (e) {

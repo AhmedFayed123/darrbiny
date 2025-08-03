@@ -1,8 +1,10 @@
+import 'package:darrbiny/core/components/widgets/custom_button.dart';
 import 'package:darrbiny/core/constant/styles.dart';
-import 'package:darrbiny/features/profile/presentation/views/wallet_view.dart';
+import 'package:darrbiny/features/profile/presentation/views/widgets/wallet_view.dart';
 import 'package:darrbiny/features/profile/presentation/views/widgets/confirmation_dialog.dart';
 import 'package:darrbiny/features/profile/presentation/views/widgets/profile_image_widget.dart';
 import 'package:darrbiny/features/profile/presentation/views/widgets/rewards_view.dart';
+import 'package:darrbiny/features/sign_up/presentation/views/sign_up_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -10,16 +12,18 @@ import '../../../../core/components/widgets/custom_app_bar.dart';
 import '../../../../core/constant/colors.dart';
 import '../../../../generated/assets.dart';
 import '../controllers/learner_profile_controller.dart';
-import 'bank_account.dart';
-import 'edit_profile_view.dart';
-import 'language_view.dart';
+import 'widgets/bank_account.dart';
+import 'widgets/edit_profile_view.dart';
+import 'widgets/language_view.dart';
 
 class ProfileView extends StatelessWidget {
   const ProfileView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final LearnerProfileController controller = Get.put(LearnerProfileController());
+    final LearnerProfileController controller = Get.put(
+      LearnerProfileController(),
+    );
 
     return SafeArea(
       child: Scaffold(
@@ -37,19 +41,35 @@ class ProfileView extends StatelessWidget {
 
                 if (controller.error.isNotEmpty) {
                   print('Error: ${controller.error.value}');
-                  return Center(child: Text('Error: ${controller.error.value}'));
+                  return Center(
+                    child: Column(
+                      children: [
+                        Text('لا توجد بيانات.'),
+                        SizedBox(height: 3.h,),
+                        CustomButton(text: 'سجل الدخول', onPressed: () {Get.to(SignUpView(flag: 'learner'));}),
+                      ],
+                    ),
+                  );
                 }
 
                 final profile = controller.learnerProfile.value;
                 if (profile == null) {
-                  return const Center(child: Text('لا توجد بيانات.'));
+                  return Center(
+                    child: Column(
+                      children: [
+                        Text('لا توجد بيانات.'),
+                        SizedBox(height: 3.h,),
+                        CustomButton(text: 'سجل الدخول', onPressed: () {Get.to(SignUpView(flag: 'learner'));}),
+                      ],
+                    ),
+                  );
                 }
 
                 return Center(
                   child: ProfileImageWidget(
                     imageUrl: profile.profileImageUrl ?? Assets.imagesGirl,
                     profileName: profile.name ?? 'غير معروف',
-                    profileEmail: profile.email ??profile.phone?? 'غير متوفر',
+                    profileEmail: profile.email ?? profile.phone ?? 'غير متوفر',
                   ),
                 );
               }),
@@ -82,41 +102,47 @@ class ProfileView extends StatelessWidget {
                     _profileSectionTile(
                       title: 'الحساب البنكي',
                       icon: Icons.attach_money,
-                      onTap: (){
+                      onTap: () {
                         Get.to(BankAccount());
-                      }
+                      },
                     ),
                     _profileSectionTile(
                       title: 'مكافآتي',
                       icon: Icons.card_giftcard,
                       iconColor: kPositiveTrendColor,
-                      onTap: (){
+                      onTap: () {
                         Get.to(RewardsView());
-                      }
+                      },
                     ),
                     _profileSectionTile(
                       title: 'المحفظة',
                       icon: Icons.account_balance_wallet,
                       iconColor: kSecondaryColor,
-                      onTap: (){Get.to(WalletView());}
+                      onTap: () {
+                        Get.to(WalletView());
+                      },
                     ),
                     _profileSectionTile(
                       title: 'حذف حسابي',
                       icon: Icons.delete_forever_outlined,
                       iconColor: Colors.red,
-                      onTap: (){
+                      onTap: () {
                         showDialog(
                           context: context,
-                          builder: (_) => ConfirmationDialog(
-                            onConfirm: () {
-                              Get.back();
-                            },
-                            onCancel: () {
-                              Get.back();
-                            }, image: Assets.imagesTrash2, title: 'حذف الجساب', desc: 'هل انت متأكد انك تريد حذف الحساب',
-                          ),
+                          builder:
+                              (_) => ConfirmationDialog(
+                                onConfirm: () {
+                                  Get.back();
+                                },
+                                onCancel: () {
+                                  Get.back();
+                                },
+                                image: Assets.imagesTrash2,
+                                title: 'حذف الجساب',
+                                desc: 'هل انت متأكد انك تريد حذف الحساب',
+                              ),
                         );
-                      }
+                      },
                     ),
                   ],
                 ),
@@ -269,15 +295,20 @@ class ProfileView extends StatelessWidget {
       onTap: () {
         showDialog(
           context: context,
-          builder: (_) => ConfirmationDialog(
-            onConfirm: () {
-              Get.back();
-            },
-            onCancel: () {
-              Get.back();
-            }, image: Assets.imagesLogout, title: 'تسجيل خروج!', desc: 'هل انت متأكد انك تريد تسجيل خروج؟',
-          ),
-        );      },
+          builder:
+              (_) => ConfirmationDialog(
+                onConfirm: () {
+                  Get.back();
+                },
+                onCancel: () {
+                  Get.back();
+                },
+                image: Assets.imagesLogout,
+                title: 'تسجيل خروج!',
+                desc: 'هل انت متأكد انك تريد تسجيل خروج؟',
+              ),
+        );
+      },
     );
   }
 

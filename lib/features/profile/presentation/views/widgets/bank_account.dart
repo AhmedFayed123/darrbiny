@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../core/components/widgets/custom_app_bar.dart';
-import '../../../../core/components/widgets/custom_button.dart';
-import '../../../../core/constant/styles.dart';
+import '../../../../../core/components/widgets/custom_app_bar.dart';
+import '../../../../../core/components/widgets/custom_button.dart';
+import '../../../../../core/constant/styles.dart';
 
 class BankAccount extends StatelessWidget {
   const BankAccount({super.key});

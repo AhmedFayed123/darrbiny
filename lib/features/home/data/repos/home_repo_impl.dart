@@ -6,8 +6,8 @@ import '../../../../core/errors/server_failures.dart';
 import '../../../../core/network/dio_helper/dio_helper.dart';
 import '../models/instructors_list_model/Instructors_list_model.dart';
 import '../models/packages_list_model/Packages_list_model.dart';
-import '../models/request_model/Request_model.dart';
-import '../models/request_model/request_request/Request_request.dart';
+import '../models/request_model/booking_model/Booking_model.dart';
+import '../models/request_model/booking_request_model/Booking_request_model.dart';
 import '../models/single_package_model/single_package_model.dart';
 import 'home_repo.dart';
 
@@ -63,14 +63,14 @@ class HomeRepoImpl extends HomeRepo{
   }
 
   @override
-  Future<Either<Failure, RequestModel>> postRequest(BookingRequest requestRequest) async{
+  Future<Either<Failure, BookingModel>> postRequest(BookingRequestModel requestRequest) async{
     try {
-      final Response response = await DioHelper.postDataWithoutToken(
+      final Response response = await DioHelper.postData(
         url: AppEndpoints.requests,
-        data: requestRequest.toJson(),
+        data: requestRequest,
       );
-      print("Request Data: ${requestRequest.toJson()}");
-      return right(RequestModel.fromJson(response.data));
+      print("✅ Response data from server: ${response.data}");
+      return right(BookingModel.fromJson(response.data));
     } on DioException catch (e) {
       return left(ServerFailure.fromDioError(e));
     } catch (e) {

@@ -9,9 +9,11 @@ import '../../../../../generated/assets.dart';
 import '../../controller/navigation_controller.dart';
 
 class FancyBottomNavBar extends StatelessWidget {
-  const FancyBottomNavBar({super.key});
+  final GetxController controller;
 
-  static const _bgColor  = Color(0xFFF0EDFF);
+  const FancyBottomNavBar({super.key, required this.controller});
+
+  static const _bgColor = Color(0xFFF0EDFF);
 
   @override
   Widget build(BuildContext context) {
@@ -31,69 +33,64 @@ class FancyBottomNavBar extends StatelessWidget {
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: const [
-            _NavItem(index: 0, label: 'الرئيسية',  svgAsset: Assets.svgHome),
-            _NavItem(index: 2, label: 'الرسائل',   svgAsset: Assets.svgCaht),
-            _NavItem(index: 1, label: 'التدريبات', svgAsset: Assets.svgCalendar),
-            _NavItem(index: 3, label: 'حسابي',     svgAsset: Assets.svgIcon),
-
+          children: [
+            _NavItem(index: 0, label: 'الرئيسية', svgAsset: Assets.svgHome, controller: controller),
+            _NavItem(index: 2, label: 'الرسائل', svgAsset: Assets.svgCaht, controller: controller),
+            _NavItem(index: 1, label: 'التدريبات', svgAsset: Assets.svgCalendar, controller: controller),
+            _NavItem(index: 3, label: 'حسابي', svgAsset: Assets.svgIcon, controller: controller),
           ],
         ),
       ),
     );
   }
 }
-
-/// عنصر واحد داخل شريط التنقّل
 class _NavItem extends StatelessWidget {
+  final int index;
+  final String label;
+  final String svgAsset;
+  final GetxController controller;
+
   const _NavItem({
     required this.index,
     required this.label,
-    required this.svgAsset, // ← بدّل icon بـ svgAsset
+    required this.svgAsset,
+    required this.controller,
   });
-
-  final int index;
-  final String label;
-  final String svgAsset; // مثال: 'assets/icons/home.svg'
 
   @override
   Widget build(BuildContext context) {
-    final NavigationController c = Get.find();
+    final RxInt currentIndex = (controller as dynamic).currentIndex;
 
     return Expanded(
       child: InkWell(
-        onTap: () => c.changeIndex(index),
+        onTap: () => (controller as dynamic).changeIndex(index),
         splashFactory: NoSplash.splashFactory,
         highlightColor: Colors.transparent,
-        child: Obx(
-              () {
-            final bool isSelected = c.currentIndex.value == index;
-            final Color currentColor =
-            isSelected ? kSecondaryColor : kLightGrey;
+        child: Obx(() {
+          final bool isSelected = currentIndex.value == index;
+          final Color currentColor = isSelected ? kSecondaryColor : kLightGrey;
 
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // SVG بدل Icon
-                SvgPicture.asset(
-                  svgAsset,
-                  width: 26.6.w,
-                  height: 26.6.w,
-                  colorFilter: ColorFilter.mode(currentColor, BlendMode.srcIn),
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SvgPicture.asset(
+                svgAsset,
+                width: 26.6.w,
+                height: 26.6.w,
+                colorFilter: ColorFilter.mode(currentColor, BlendMode.srcIn),
+              ),
+              SizedBox(height: 4.h),
+              Text(
+                label,
+                style: TextStyle(
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w500,
+                  color: currentColor,
                 ),
-                SizedBox(height: 4.h),
-                Text(
-                  label,
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w500,
-                    color: currentColor,
-                  ),
-                ),
-              ],
-            );
-          },
-        ),
+              ),
+            ],
+          );
+        }),
       ),
     );
   }

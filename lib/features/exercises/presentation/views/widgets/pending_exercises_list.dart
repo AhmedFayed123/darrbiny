@@ -1,0 +1,45 @@
+import 'package:darrbiny/features/exercises/presentation/views/widgets/pending_exercises_item.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+
+import '../../../../../generated/assets.dart';
+import '../../controllers/learner_exercises_controller.dart';
+
+class PendingExercisesList extends StatelessWidget {
+  const PendingExercisesList({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final controller = Get.put(LearnerExercisesController());
+
+    return Obx(() {
+      if (controller.isLoading.value) {
+        return const Center(child: CircularProgressIndicator());
+      }
+
+      if (controller.primaryRequests.isEmpty) {
+        return Center(child: Text('لا يوجد كورسات بانتظار العروض حاليًا'));
+      }
+
+      return ListView.separated(
+        itemCount: controller.primaryRequests.length,
+        separatorBuilder: (_, __) => SizedBox(height: 16.h),
+        itemBuilder: (context, index) {
+          final exercise = controller.primaryRequests[index];
+
+          return PendingExercisesItem(
+            durationDays: exercise.package.daysCount.toString() ?? "",
+            durationHours: exercise.package.hoursCount.toString() ?? "",
+            learnerImageUrl:Assets.imagesGirl,
+            instructorName: exercise.instructor?.name??"",
+            rating: exercise.instructor?.rate??"",
+            price: exercise.totalPrice??"",
+            packName: exercise.package.name,
+            instructorMessage: exercise.instructor?.bio,
+          );
+        },
+      );
+    });
+  }
+}

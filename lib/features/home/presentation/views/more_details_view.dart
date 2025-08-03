@@ -12,7 +12,7 @@ import 'package:get/get.dart';
 import '../../../../core/components/widgets/custom_app_bar.dart';
 import '../../../../core/components/widgets/custom_button.dart';
 import '../../../payment/presentation/views/payment_options_view.dart';
-import '../../data/models/request_model/request_request/Request_request.dart';
+import '../../data/models/request_model/booking_request_model/Booking_request_model.dart';
 import '../controller/home_controller/home_controller.dart';
 
 class MoreDetailsView extends StatelessWidget {
@@ -61,16 +61,16 @@ class MoreDetailsView extends StatelessWidget {
                 CustomButton(
                   text: 'استمرار',
                   onPressed: () async {
-                    final request = BookingRequest(
+                    final request = BookingRequestModel(
                       learnerId: learnerId,
-                      instructorId: instructorController.selectedInstructorId??0,
+                      instructorId: instructorController.selectedInstructorId,
                       packageId: packageId,
                       startDate: dateController.selectedDate.value,
                       locationCity: locationController.cityController.value.text,
                       locationArea: locationController.areaController.value.text,
                       hasLearnerCar: carController.selectedOption.value == 'لدي سيارة',
                       requiresTransport: pickupController.selectedOption.value == 'نعم',
-                      totalPrice: totalPrice.toString(),
+                      totalPrice: totalPrice,
                       type: instructorController.mode.value == 'اختيار مدربة' &&
                           instructorController.selectedInstructor.value.isNotEmpty
                           ? 'private'

@@ -56,4 +56,48 @@ class ProfileRepoImpl extends ProfileRepo{
       return left(ServerFailure(e.toString()));
     }
   }
+
+  @override
+  Future<Either<Failure, LearnersProfileUpdate>> postInstructorUpdateProfile({required String name, required String filePath}) async{
+    try {
+      final String? instructorId = await StorageService().getUserId();
+
+      FormData formData = FormData.fromMap({
+        "name": name,
+        "profile_image": await MultipartFile.fromFile(
+          filePath,
+          filename: filePath.split("/").last,
+        ),
+      });
+
+      final Response response = await DioHelper.postDataWithoutToken(
+        url: "${AppEndpoints.instructorsUpdate}/$instructorId",
+        data: formData,
+      );
+
+      return right(LearnersProfileUpdate.fromJson(response.data));
+    } on DioException catch (e) {
+      return left(ServerFailure.fromDioError(e));
+    } catch (e) {
+      return left(ServerFailure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, LearnerProfileModel>> postInstructorProfile() async{
+    try {
+      final String? instructorId = await StorageService().getUserId();
+
+      final Response response = await DioHelper.postDataWithoutToken(
+        url: AppEndpoints.instructorsProfile,
+        data: {"instructor_id": instructorId},
+      );
+
+      return right(LearnerProfileModel.fromJson(response.data));
+    } on DioException catch (e) {
+      return left(ServerFailure.fromDioError(e));
+    } catch (e) {
+      return left(ServerFailure(e.toString()));
+    }
+  }
 }

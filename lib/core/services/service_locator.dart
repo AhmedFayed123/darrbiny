@@ -1,6 +1,11 @@
 
+import 'package:darrbiny/features/exercises/data/repos/learner_exercises_repo.dart';
+import 'package:darrbiny/features/exercises/data/repos/learner_exercises_repo_impl.dart';
+import 'package:darrbiny/features/instructor_exercises/data/repos/instructor_exercises_repo_impl.dart';
 import 'package:darrbiny/features/login/data/repos/login_repo.dart';
 import 'package:darrbiny/features/login/data/repos/login_repo_impl.dart';
+import 'package:darrbiny/features/message/data/repos/chat_repo.dart';
+import 'package:darrbiny/features/message/data/repos/chat_repo_impl.dart';
 import 'package:darrbiny/features/profile/data/repos/profile_repo.dart';
 import 'package:darrbiny/features/profile/data/repos/profile_repo_impl.dart';
 import 'package:get_it/get_it.dart';
@@ -8,6 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../features/home/data/repos/home_repo.dart';
 import '../../features/home/data/repos/home_repo_impl.dart';
+import '../../features/instructor_exercises/data/repos/instructor_exercises_repo.dart';
 import '../../features/instructor_home/data/repos/instructor_home_repo.dart';
 import '../../features/instructor_home/data/repos/instructor_home_repo_impl.dart';
 import '../../features/sign_up/data/repos/sign_up_repo.dart';
@@ -41,6 +47,9 @@ class ServiceLocator {
     sl.registerLazySingleton<HomeRepo>(() => HomeRepoImpl());
     sl.registerLazySingleton<InstructorHomeRepo>(() => InstructorHomeRepoImpl());
     sl.registerLazySingleton<ProfileRepo>(() => ProfileRepoImpl());
+    sl.registerLazySingleton<ChatRepo>(() => ChatRepoImpl());
+    sl.registerLazySingleton<LearnerExercisesRepo>(() => LearnerExercisesRepoImpl());
+    sl.registerLazySingleton<InstructorExercisesRepo>(() => InstructorExercisesRepoImpl());
     // sl.registerLazySingleton<LoginRepo>(() => LoginRepoImpl());
     // sl.registerLazySingleton<SignupRepo>(() => SignupRepoImpl());
     // sl.registerLazySingleton<MarketRepo>(() => MarketRepoImpl());

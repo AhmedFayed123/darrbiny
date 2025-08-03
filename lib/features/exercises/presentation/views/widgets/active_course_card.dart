@@ -5,25 +5,31 @@ import '../../../../../core/constant/colors.dart';
 class ActiveCourseCard extends StatelessWidget {
   const ActiveCourseCard({
     super.key,
-    required this.duration,
+    required this.durationDays,
     required this.learnerImageUrl,
-    required this.learnerName,
+    required this.instructorName,
     required this.rating,
     required this.date,
     required this.price,
     required this.time,
+    required this.durationHours,
+    required this.packName,
   });
 
-  final String duration;
+  final String? durationDays;
+  final String? packName;
+  final String? durationHours;
   final String learnerImageUrl;
-  final String learnerName;
-  final double rating;
+  final String instructorName;
+  final String rating;
   final String date;
-  final double price;
+  final String? price;
   final String time;
 
   @override
   Widget build(BuildContext context) {
+    final double parsedRating = double.tryParse(rating) ?? 0.0;
+
     return Container(
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
@@ -34,7 +40,7 @@ class ActiveCourseCard extends StatelessWidget {
             color: Colors.black.withOpacity(0.05),
             blurRadius: 6,
             offset: const Offset(0, 2),
-          )
+          ),
         ],
       ),
       child: Column(
@@ -51,7 +57,7 @@ class ActiveCourseCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "كورس تدريب",
+                  "$packName",
                   style: TextStyle(
                     fontSize: 16.sp,
                     fontWeight: FontWeight.w700,
@@ -59,13 +65,16 @@ class ActiveCourseCard extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 12.w,
+                    vertical: 4.h,
+                  ),
                   decoration: BoxDecoration(
                     color: const Color(0xFFFFF1B2),
                     borderRadius: BorderRadius.circular(10.r),
                   ),
                   child: Text(
-                    duration,
+                    "$durationDays ايام($durationHours ساعات)",
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 12.sp,
@@ -79,7 +88,6 @@ class ActiveCourseCard extends StatelessWidget {
 
           SizedBox(height: 16.h),
 
-          // بيانات المتدرب + زر التواصل
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -94,7 +102,7 @@ class ActiveCourseCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        learnerName,
+                        instructorName,
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: 14.sp,
@@ -102,32 +110,53 @@ class ActiveCourseCard extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 4.h),
+
                       Row(
-                        children: List.generate(
-                          5,
-                              (index) => Icon(
-                            index < rating ? Icons.star : Icons.star_border,
-                            color: Colors.amber,
-                            size: 16.sp,
-                          ),
-                        ),
+                        children: List.generate(5, (index) {
+                          if (index < parsedRating.floor()) {
+                            return Icon(
+                              Icons.star,
+                              color: Colors.amber,
+                              size: 16.sp,
+                            );
+                          } else if (index < parsedRating &&
+                              parsedRating - index >= 0.5) {
+                            return Icon(
+                              Icons.star_half,
+                              color: Colors.amber,
+                              size: 16.sp,
+                            );
+                          } else {
+                            return Icon(
+                              Icons.star_border,
+                              color: Colors.amber,
+                              size: 16.sp,
+                            );
+                          }
+                        }),
                       ),
                     ],
                   ),
                 ],
               ),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-                decoration: BoxDecoration(
-                  border: Border.all(color: kSecondaryColor),
-                  borderRadius: BorderRadius.circular(24.r),
-                ),
-                child: Text(
-                  'تواصل مع المدربة',
-                  style: TextStyle(
-                    color: kSecondaryColor,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 12.sp,
+              InkWell(
+                onTap: () {},
+                child: Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 16.w,
+                    vertical: 8.h,
+                  ),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: kSecondaryColor),
+                    borderRadius: BorderRadius.circular(24.r),
+                  ),
+                  child: Text(
+                    'تواصل مع المدربة',
+                    style: TextStyle(
+                      color: kSecondaryColor,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 12.sp,
+                    ),
                   ),
                 ),
               ),
@@ -147,13 +176,67 @@ class ActiveCourseCard extends StatelessWidget {
             child: Column(
               children: [
                 _buildRow('التاريخ', date),
-                _buildRow('الوقت', time),
+                _buildRow('النوع', time),
                 _buildRow('السعر', '$price ﷼', isPrice: true),
               ],
             ),
           ),
-
           SizedBox(height: 12.h),
+          Row(
+            children: [
+              Expanded(
+                child: InkWell(
+                  onTap: () {},
+                  child: Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 16.w,
+                      vertical: 12.h,
+                    ),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: kSecondaryColor),
+                      borderRadius: BorderRadius.circular(24.r),
+                    ),
+                    child: Center(
+                      child: Text(
+                        'عرض التفاصيل',
+                        style: TextStyle(
+                          color: kSecondaryColor,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 12.sp,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(width: 4.w,),
+              Expanded(
+                child: InkWell(
+                  onTap: () {},
+                  child: Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 16.w,
+                      vertical: 12.h,
+                    ),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: kNegativeTrendColor),
+                      borderRadius: BorderRadius.circular(24.r),
+                    ),
+                    child: Center(
+                      child: Text(
+                        'الغاء الحجز',
+                        style: TextStyle(
+                          color: kNegativeTrendColor,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 12.sp,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );

@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-import '../../../../core/components/widgets/custom_app_bar.dart';
-import '../../../../core/components/widgets/custom_button.dart';
-import '../../../../core/constant/colors.dart';
-import '../../../../core/constant/styles.dart';
-import '../../../../generated/assets.dart';
-import '../../../../translations/language_controller.dart';
+import '../../../../../core/components/widgets/custom_app_bar.dart';
+import '../../../../../core/components/widgets/custom_button.dart';
+import '../../../../../core/constant/colors.dart';
+import '../../../../../core/constant/styles.dart';
+import '../../../../../generated/assets.dart';
+import '../../../../../translations/language_controller.dart';
 
 class LanguageView extends StatelessWidget {
   const LanguageView({super.key});

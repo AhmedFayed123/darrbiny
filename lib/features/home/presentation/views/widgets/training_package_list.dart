@@ -24,7 +24,9 @@ class TrainingPackageList extends StatelessWidget {
       return ListView.separated(
         physics: const NeverScrollableScrollPhysics(),
         shrinkWrap: true,
-        itemCount: controller.packagesList.length,
+        itemCount: controller.packagesList.length >= 3
+            ? 3
+            : controller.packagesList.length,
         separatorBuilder: (_, __) => SizedBox(height: 12.h),
         itemBuilder: (context, index) {
           final package = controller.packagesList[index];

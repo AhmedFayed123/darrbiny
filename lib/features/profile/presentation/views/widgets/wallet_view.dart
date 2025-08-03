@@ -4,9 +4,9 @@ import 'package:darrbiny/features/profile/presentation/views/widgets/transaction
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../core/components/widgets/balance_card.dart';
-import '../../../../core/components/widgets/custom_app_bar.dart';
-import '../../../../core/constant/styles.dart';
+import '../../../../../core/components/widgets/balance_card.dart';
+import '../../../../../core/components/widgets/custom_app_bar.dart';
+import '../../../../../core/constant/styles.dart';
 
 class WalletView extends StatelessWidget {
   const WalletView({super.key});

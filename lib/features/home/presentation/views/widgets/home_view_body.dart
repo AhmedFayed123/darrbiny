@@ -3,6 +3,7 @@ import 'package:darrbiny/features/home/presentation/views/widgets/search_bar_wid
 import 'package:darrbiny/features/home/presentation/views/widgets/time_line_steps.dart';
 import 'package:darrbiny/features/home/presentation/views/widgets/trainer_list.dart';
 import 'package:darrbiny/features/home/presentation/views/widgets/training_package_list.dart';
+import 'package:darrbiny/features/home/presentation/views/widgets/training_packages_full_list.dart';
 import 'package:darrbiny/features/home/presentation/views/widgets/video_thumbnail_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -36,7 +37,7 @@ class HomeViewBody extends StatelessWidget {
               CustomSeeAllRow(
                 title: 'الباقات التدريبيه',
                 allTitle: 'عرض المزيد',
-                onPressed: () {},
+                onPressed: () {Get.to(TrainingPackagesFullList());},
                 isSeeAll: true,
               ),
               const TrainingPackageList(),
