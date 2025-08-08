@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../core/constant/colors.dart';
 
 class InstructorActiveListItem extends StatelessWidget {
-  const InstructorActiveListItem({super.key, required this.trainerName, required this.trainerImageUrl, required this.rating, required this.fromDate, required this.toDate, required this.location, required this.trainerCar, required this.transportRequest, required this.price, required this.duration});
+  const InstructorActiveListItem({super.key, required this.trainerName, required this.trainerImageUrl, required this.rating, required this.fromDate, required this.toDate, required this.location, required this.trainerCar, required this.transportRequest, required this.price, required this.duration, required this.onTap});
 
 
   final String trainerName;
@@ -16,6 +16,7 @@ class InstructorActiveListItem extends StatelessWidget {
   final String trainerCar;
   final String transportRequest;
   final int price;
+  final VoidCallback onTap;
   final String duration;
   @override
   Widget build(BuildContext context) {
@@ -112,27 +113,30 @@ class InstructorActiveListItem extends StatelessWidget {
                   ),
                 ],
               ),
-              Container(
-                padding:
-                EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
-                decoration: BoxDecoration(
-                  border: Border.all(color: const Color(0xFF8B6EF6)),
-                  borderRadius: BorderRadius.circular(24),
-                ),
-                child: Row(
-                  children: [
-                    const Text(
-                      'تواصل مع المتدربة',
-                      style: TextStyle(
-                        color: kSecondaryColor,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 12,
+              InkWell(
+                onTap: onTap,
+                child: Container(
+                  padding:
+                  EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: const Color(0xFF8B6EF6)),
+                    borderRadius: BorderRadius.circular(24),
+                  ),
+                  child: Row(
+                    children: [
+                      const Text(
+                        'تواصل مع المتدربة',
+                        style: TextStyle(
+                          color: kSecondaryColor,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 12,
+                        ),
                       ),
-                    ),
-                    SizedBox(width: 3.w),
-                    const Icon(Icons.location_on_outlined,
-                        color: kSecondaryColor),
-                  ],
+                      SizedBox(width: 3.w),
+                      const Icon(Icons.location_on_outlined,
+                          color: kSecondaryColor),
+                    ],
+                  ),
                 ),
               ),
             ],

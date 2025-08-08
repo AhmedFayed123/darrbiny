@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../../../../generated/assets.dart';
+import '../../../../message/presentation/views/chat_start_view.dart';
 import '../../controllers/instructor_exercises_controller.dart';
 import 'instructor_active_list_item.dart';
 
@@ -34,15 +35,24 @@ class InstructorActiveList extends StatelessWidget {
             rating: double.tryParse(exercise.instructor?.rate ?? '0') ?? 0.0,
             fromDate: exercise.startDate ?? 'لم يحدد بعد',
             toDate: '',
-            location: '${exercise.locationCity ?? ''} - ${exercise.locationArea ?? ''}',
+            location:
+                '${exercise.locationCity ?? ''} - ${exercise.locationArea ?? ''}',
             trainerCar: exercise.hasLearnerCar == true ? 'نعم' : 'لا',
             transportRequest: exercise.requiresTransport == true ? 'نعم' : 'لا',
-            price: int.tryParse(exercise.totalPrice.split('.').first ?? '0') ?? 0,
+            price:
+                int.tryParse(exercise.totalPrice.split('.').first ?? '0') ?? 0,
             duration: exercise.type ?? '',
+            onTap: () {
+              Get.to(
+                () => ChatStartView(
+                  otherUserId: int.tryParse(exercise.learnerId.toString() ?? '0') ?? 0,
+                  userName: exercise.learner.name,
+                ),
+              );
+            },
           );
         },
       );
     });
   }
-
 }

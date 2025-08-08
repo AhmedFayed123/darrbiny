@@ -6,7 +6,7 @@ import '../../../../../core/constant/colors.dart';
 import '../../../../../generated/assets.dart';
 
 class PendingExercisesItem extends StatelessWidget {
-  const PendingExercisesItem({super.key, this.durationDays, this.packName, this.durationHours, required this.learnerImageUrl, required this.instructorName, required this.rating, this.price, this.carModel, this.instructorMessage,});
+  const PendingExercisesItem({super.key, this.durationDays, this.packName, this.durationHours, required this.learnerImageUrl, required this.instructorName, required this.rating, this.price, this.instructorMessage, required this.onTap, required this.onTap2,});
 
   final String? durationDays;
   final String? packName;
@@ -15,9 +15,9 @@ class PendingExercisesItem extends StatelessWidget {
   final String instructorName;
   final String rating;
   final String? price;
-  final String? carModel;
   final String? instructorMessage;
-
+  final VoidCallback onTap;
+  final VoidCallback onTap2;
 
   @override
   Widget build(BuildContext context) {
@@ -133,7 +133,7 @@ class PendingExercisesItem extends StatelessWidget {
                 ],
               ),
               InkWell(
-                onTap: () {},
+                onTap: onTap,
                 child: Container(
                   padding: EdgeInsets.symmetric(
                     horizontal: 16.w,
@@ -164,8 +164,6 @@ class PendingExercisesItem extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Image.asset(Assets.imagesBabyCar,width: 32.w,),
-                Text("$carModel",style: AppStyles.textStyle14500,),
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 6.h),
                   child: Row(
@@ -199,7 +197,7 @@ class PendingExercisesItem extends StatelessWidget {
 
           SizedBox(height: 12.h),
           InkWell(
-            onTap: () {},
+            onTap: onTap2,
             child: Container(
               padding: EdgeInsets.symmetric(
                 horizontal: 16.w,

@@ -13,7 +13,7 @@ class CompletedListItem extends StatelessWidget {
     required this.instructorName,
     required this.rating,
     required this.date,
-    this.price,
+    this.price, required this.onTap,
   });
 
   final String? durationDays;
@@ -24,6 +24,7 @@ class CompletedListItem extends StatelessWidget {
   final String rating;
   final String date;
   final String? price;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -160,7 +161,7 @@ class CompletedListItem extends StatelessWidget {
           ),
           SizedBox(height: 12.h),
           InkWell(
-            onTap: () {},
+            onTap: onTap,
             child: Container(
               width: double.infinity,
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),

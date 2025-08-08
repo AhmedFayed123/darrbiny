@@ -173,53 +173,54 @@ class InstructorTrainingCourseCard extends StatelessWidget {
 
           SizedBox(height: 16.h),
 
+
           // عرض سعر
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.transparent,
-              borderRadius: BorderRadius.circular(25),
-              border: Border.all(
-                color: kSecondaryColor,
-                width: 1.2,
-              ),
-            ),
-            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    decoration: const InputDecoration(
-                      hintText: 'اكتب سعرك هنا',
-                      border: InputBorder.none,
-                    ),
-                    style: const TextStyle(fontSize: 14),
-                  ),
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                    color: kSecondaryColor.withOpacity(.15),
-                    borderRadius: BorderRadius.circular(25),
-                  ),
-                  child: TextButton(
-                    onPressed: () {},
-                    style: TextButton.styleFrom(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 20.w, vertical: 8.h),
-                      foregroundColor: kSecondaryColor,
-                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    ),
-                    child: const Text(
-                      'قدم عرض',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
+          // Container(
+          //   decoration: BoxDecoration(
+          //     color: Colors.transparent,
+          //     borderRadius: BorderRadius.circular(25),
+          //     border: Border.all(
+          //       color: kSecondaryColor,
+          //       width: 1.2,
+          //     ),
+          //   ),
+          //   padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
+          //   child: Row(
+          //     children: [
+          //       Expanded(
+          //         child: TextField(
+          //           decoration: const InputDecoration(
+          //             hintText: 'اكتب سعرك هنا',
+          //             border: InputBorder.none,
+          //           ),
+          //           style: const TextStyle(fontSize: 14),
+          //         ),
+          //       ),
+          //       Container(
+          //         decoration: BoxDecoration(
+          //           color: kSecondaryColor.withOpacity(.15),
+          //           borderRadius: BorderRadius.circular(25),
+          //         ),
+          //         child: TextButton(
+          //           onPressed: () {},
+          //           style: TextButton.styleFrom(
+          //             padding: EdgeInsets.symmetric(
+          //                 horizontal: 20.w, vertical: 8.h),
+          //             foregroundColor: kSecondaryColor,
+          //             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          //           ),
+          //           child: const Text(
+          //             'قدم عرض',
+          //             style: TextStyle(
+          //               fontWeight: FontWeight.bold,
+          //               fontSize: 14,
+          //             ),
+          //           ),
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+          // ),
         ],
       ),
     );

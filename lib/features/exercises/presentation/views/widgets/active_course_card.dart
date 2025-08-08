@@ -13,7 +13,7 @@ class ActiveCourseCard extends StatelessWidget {
     required this.price,
     required this.time,
     required this.durationHours,
-    required this.packName,
+    required this.packName, required this.onTap,
   });
 
   final String? durationDays;
@@ -25,6 +25,7 @@ class ActiveCourseCard extends StatelessWidget {
   final String date;
   final String? price;
   final String time;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -186,7 +187,7 @@ class ActiveCourseCard extends StatelessWidget {
             children: [
               Expanded(
                 child: InkWell(
-                  onTap: () {},
+                  onTap: onTap,
                   child: Container(
                     padding: EdgeInsets.symmetric(
                       horizontal: 16.w,

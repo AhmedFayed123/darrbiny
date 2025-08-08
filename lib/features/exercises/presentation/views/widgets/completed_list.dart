@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../../../../generated/assets.dart';
+import '../../../../home/presentation/views/more_details_view.dart';
 import '../../controllers/learner_exercises_controller.dart';
 import 'completed_list_item.dart';
 
@@ -36,7 +37,10 @@ class CompletedList extends StatelessWidget {
             rating: exercise.instructor?.rate ?? "",
             price: exercise.totalPrice ?? "",
             packName: exercise.package.name,
-            date: exercise.startDate ?? "",
+            date: exercise.startDate ?? "", onTap: () {
+            Get.to(()=>MoreDetailsView(learnerId: exercise.learnerId, packageId: exercise.packageId, totalPrice: exercise.package.price));
+
+          },
           );
         },
       );

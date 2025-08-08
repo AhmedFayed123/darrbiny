@@ -7,5 +7,6 @@ import '../models/instructor_response_model/instructor_response_model.dart';
 abstract class InstructorExercisesRepo {
   Future<Either<Failure, InstructorLessonRequestsResponse>> requestsInstructor();
   Future<Either<Failure, List<CompletedRates>>> completedRates();
+  Future<Either<Failure, Map<String,dynamic>>> sessionsReject(String msg,int sessionId);
 
 }

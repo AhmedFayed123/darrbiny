@@ -4,7 +4,9 @@ class AppEndpoints {
   static const String packagesList = 'packages';
   static const String instructorsList = 'instructors';
   static const String singlePackage = 'packages';
-  static const String chatMessages = 'chat/messages';
+  static const String chatMessage = 'chat/message';
+  static const String getChatMessages = 'chat/messages';
+  static const String chatConversationUser = 'chat/conversation/user';
   static const String startChatMessages = 'chat/conversation';
   static const String requests = 'requests';
   static const String learnersProfile = 'learners/profile';
@@ -18,5 +20,6 @@ class AppEndpoints {
   static const String instructorsRegister = 'instructors/register/firebase';
   static const String learnersRegister = 'learners/register/firebase';
   static const String instructorsHomeList = 'requests/instructor';
+  static const String requestsSessions = 'requests/sessions';
 
 }

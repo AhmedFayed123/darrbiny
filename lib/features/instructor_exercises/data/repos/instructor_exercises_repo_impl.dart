@@ -48,4 +48,27 @@ class InstructorExercisesRepoImpl extends InstructorExercisesRepo{
     }
   }
 
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> sessionsReject(String msg, int sessionId) async{
+    try {
+      final formData = FormData.fromMap({
+        'rejection_reason': msg,
+      });
+
+      final Response response = await DioHelper.postData(
+          url: "sessions/$sessionId/reject",
+          data: formData,
+          isMultipart: true
+      );
+
+      print('iiiii');
+      print(response.data);
+      return right(response.data);
+    } on DioException catch (e) {
+      return left(ServerFailure.fromDioError(e));
+    } catch (e) {
+      return left(ServerFailure(e.toString()));
+    }
+  }
+
 }

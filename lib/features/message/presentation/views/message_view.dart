@@ -6,12 +6,15 @@ import '../../../../core/components/widgets/custom_app_bar.dart';
 import '../../../../core/constant/colors.dart';
 import '../../../../generated/assets.dart';
 import '../../../home/presentation/views/widgets/search_bar_widget.dart';
-import '../../data/models/conversations_model/Conversations_model.dart';
+import '../../data/models/user_conversation/UserOne.dart';
+import '../../data/models/user_conversation/UserTwo.dart';
+import '../../data/models/user_conversation/User_coversation.dart';
 import '../controller/chat_controller.dart';
+import 'chat_details_view.dart';
+
 
 class MessageView extends StatelessWidget {
   MessageView({super.key});
-
   final ChatController controller = Get.put(ChatController());
 
   @override
@@ -25,27 +28,78 @@ class MessageView extends StatelessWidget {
               const CustomAppBar(title: 'الرسائل'),
               const SearchBarWidget(),
               SizedBox(height: 12.h),
+              Align(
+                alignment: Alignment.centerRight,
+                child: ElevatedButton.icon(
+                  onPressed: () => controller.getUserConversations(),
+                  icon: Icon(Icons.refresh),
+                  label: Text("تحديث"),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: kSecondaryColor,
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12.r),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 12.h),
               Expanded(
                 child: Obx(() {
-                  if (controller.isLoading.value) {
-                    return const Center(child: CircularProgressIndicator());
+                  if (controller.isUserConversationsLoading.value) {
+                    final conversations = controller.userConversationsList;
+                    return ListView.separated(
+                      itemCount: conversations.length,
+                      separatorBuilder: (_, __) => SizedBox(height: 8.h),
+                      itemBuilder: (context, index) {
+                        final conversation = conversations[index];
+                        return Dismissible(
+                          key: UniqueKey(),
+                          direction: DismissDirection.endToStart,
+                          background: Container(
+                            alignment: Alignment.centerRight,
+                            padding: EdgeInsets.symmetric(horizontal: 20.w),
+                            decoration: BoxDecoration(
+                              color: Colors.redAccent,
+                              borderRadius: BorderRadius.circular(12.r),
+                            ),
+                            child: const Icon(Icons.delete, color: Colors.white),
+                          ),
+                          onDismissed: (direction) {
+                            controller.userConversationsList.removeAt(index);
+                            // لو عايز كمان تحذف من السيرفر، ضيف هنا كود الحذف
+                          },
+                          child: InkWell(
+                            onTap: () async {
+                              await Get.to(() => ChatDetailView(
+                                conversationId: conversation.id!,
+                                userName: conversation.userTwo?.name ?? '',
+                              ));
+                              // بعد الرجوع من صفحة الشات، نعمل تحديث
+                              controller.getUserConversations();
+                            },
+                            child: _buildMessageItem(conversation),
+                          ),
+                        );
+                      },
+                    );
                   }
 
-                  if (controller.errorMessage.isNotEmpty) {
-                    return Center(child: Text(controller.errorMessage.value));
+                  if (controller.userConversationsError.isNotEmpty) {
+                    return Center(child: Text(controller.userConversationsError.value));
                   }
 
-                  final messages = controller.conversationsList;
+                  final conversations = controller.userConversationsList;
 
-                  if (messages.isEmpty) {
-                    return const Center(child: Text("لا توجد رسائل."));
+                  if (conversations.isEmpty) {
+                    return const Center(child: Text("لا توجد محادثات."));
                   }
 
                   return ListView.separated(
-                    itemCount: messages.length,
+                    itemCount: conversations.length,
                     separatorBuilder: (_, __) => SizedBox(height: 8.h),
                     itemBuilder: (context, index) {
-                      final msg = messages[index];
+                      final conversation = conversations[index];
                       return Dismissible(
                         key: UniqueKey(),
                         direction: DismissDirection.endToStart,
@@ -58,11 +112,21 @@ class MessageView extends StatelessWidget {
                           ),
                           child: const Icon(Icons.delete, color: Colors.white),
                         ),
-                        child: _buildMessageItem(msg),
                         onDismissed: (direction) {
-                          controller.conversationsList.removeAt(index);
-                          // مكن تبعت هنا API لحذف المحادثة
+                          controller.userConversationsList.removeAt(index);
+                          // لو عايز كمان تحذف من السيرفر، ضيف هنا كود الحذف
                         },
+                        child: InkWell(
+                          onTap: () async {
+                            await Get.to(() => ChatDetailView(
+                              conversationId: conversation.id!,
+                              userName: conversation.userTwo?.name ?? '',
+                            ));
+                            // بعد الرجوع من صفحة الشات، نعمل تحديث
+                            controller.getUserConversations();
+                          },
+                          child: _buildMessageItem(conversation),
+                        ),
                       );
                     },
                   );
@@ -75,35 +139,57 @@ class MessageView extends StatelessWidget {
     );
   }
 
-  Widget _buildMessageItem(ConversationsModel msg) {
+  Widget _buildMessageItem(UserConversation conversation) {
+    dynamic userDynamic = conversation.userTwo ?? conversation.userOne;
+
+    String userName = '';
+    if (userDynamic is UserOne) {
+      userName = userDynamic.name ?? 'اسم غير معروف';
+    } else if (userDynamic is UserTwo) {
+      userName = userDynamic.name ?? 'اسم غير معروف';
+    } else {
+      userName = 'اسم غير معروف';
+    }
+
+    final lastMessage = (conversation.messages?.isNotEmpty ?? false)
+        ? conversation.messages!.last
+        : null;
+
     return Container(
       padding: EdgeInsets.all(12.w),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12.r),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 4,
+            offset: Offset(0, 2),
+          )
+        ],
       ),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Stack(
             children: [
               CircleAvatar(
-                radius: 24.r,
+                radius: 28.r,
                 backgroundImage: AssetImage(Assets.imagesGirl),
               ),
-              if (true) // ممكن تعدلها حسب الحالة الحقيقية للـ online
-                Positioned(
-                  bottom: 0,
-                  right: 0,
-                  child: Container(
-                    width: 10.w,
-                    height: 10.h,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.green,
-                      border: Border.all(color: Colors.white, width: 1.5),
-                    ),
+              Positioned(
+                bottom: 2,
+                right: 2,
+                child: Container(
+                  width: 10.w,
+                  height: 10.h,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.green,
+                    border: Border.all(color: Colors.white, width: 1.5),
                   ),
                 ),
+              ),
             ],
           ),
           SizedBox(width: 12.w),
@@ -115,50 +201,60 @@ class MessageView extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Text(
-                        msg.sender?.name ?? '',
+                        userName,
                         style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 15.sp,
                         ),
                       ),
                     ),
-                    if ((msg.isRead ?? 1) == 0)
+                    SizedBox(width: 4.w),
+                    Text(
+                      lastMessage?.createdAt?.substring(11, 16) ?? '',
+                      style: TextStyle(
+                        fontSize: 11.sp,
+                        color: Colors.grey.shade500,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 4.h),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        lastMessage?.message ?? '',
+                        style: TextStyle(
+                          fontSize: 13.sp,
+                          color: Colors.grey.shade700,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    if ((lastMessage?.isRead ?? 1) == 0)
                       Container(
+                        margin: EdgeInsets.only(left: 6.w),
                         width: 18.w,
                         height: 18.h,
                         alignment: Alignment.center,
-                        decoration: const BoxDecoration(
-                          color: kPrimaryColor,
+                        decoration: BoxDecoration(
+                          color: kSecondaryColor,
                           shape: BoxShape.circle,
                         ),
                         child: Text(
                           '1',
-                          style: TextStyle(color: Colors.white, fontSize: 10.sp),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 10.sp,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                   ],
                 ),
-                SizedBox(height: 4.h),
-                Text(
-                  msg.message ?? '',
-                  style: TextStyle(fontSize: 12.sp, color: Colors.grey),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
               ],
             ),
-          ),
-          SizedBox(width: 8.w),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Text(
-                msg.createdAt?.substring(11, 16) ?? '',
-                style: TextStyle(fontSize: 12.sp, color: Colors.grey),
-              ),
-              SizedBox(height: 4.h),
-              const Icon(Icons.done_all, size: 16, color: Colors.grey),
-            ],
           ),
         ],
       ),
