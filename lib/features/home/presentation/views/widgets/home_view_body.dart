@@ -31,6 +31,7 @@ class HomeViewBody extends StatelessWidget {
             children: [
               HomeAppBar(),
               // SearchBarWidget(),
+              SizedBox(height: 16.h,),
               VideoThumbnailWidget(),
               CustomSeeAllRow(
                 title: 'الباقات التدريبيه',

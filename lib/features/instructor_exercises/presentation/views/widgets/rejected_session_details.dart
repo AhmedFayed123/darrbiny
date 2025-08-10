@@ -195,11 +195,14 @@ class RejectedSessionDetails extends StatelessWidget {
                   Get.back();
                   Get.snackbar("تم", "تم رفض الجلسة بنجاح");
                   controller.fetchRequests();
+                  controller.getSessionsPerRequest(requestId: requestId);
                 },
                 onError: (message) {
                   Get.snackbar("خطأ", message);
                 },
               );
+              controller.getSessionsPerRequest(requestId: requestId);
+              instructorExercisesController.fetchCompletedRates();
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: kSecondaryColor,

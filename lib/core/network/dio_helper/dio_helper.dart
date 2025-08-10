@@ -61,11 +61,16 @@ class DioHelper {
     String? token,
     bool isMultipart = false,
   }) async {
-    dio!.options.headers = {
+    final headers = {
       'lang': AppConstant.currentLanguage,
-      'Authorization': 'Bearer $token',
       'Content-Type': isMultipart ? 'multipart/form-data' : 'application/json',
     };
+
+    if (token != null && token.isNotEmpty) {
+      headers['Authorization'] = 'Bearer $token';
+    }
+
+    dio!.options.headers = headers;
 
     return await dio!.post(
       url,
@@ -76,6 +81,7 @@ class DioHelper {
       ),
     );
   }
+
 
   static Future<Response> patchData({
     required String url,

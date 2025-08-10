@@ -31,9 +31,9 @@ class InstructorActiveList extends StatelessWidget {
           final exercise = controller.primaryRequests[index];
 
           return InstructorActiveListItem(
-            trainerName: exercise.instructor?.name ?? 'غير معروف',
+            trainerName: exercise.learner.name ?? 'غير معروف',
             trainerImageUrl: Assets.imagesGirl,
-            rating: double.tryParse(exercise.instructor?.rate ?? '0') ?? 0.0,
+            rating: double.tryParse(exercise.learner.rate ?? '0') ?? 0.0,
             fromDate: exercise.startDate ?? 'لم يحدد بعد',
             toDate: '',
             location:
@@ -51,7 +51,7 @@ class InstructorActiveList extends StatelessWidget {
                 ),
               );
             }, onTap2: () {
-              Get.to(RejectedSessionDetails(requestId: exercise.packageId,));
+              Get.to(RejectedSessionDetails(requestId: exercise.id,));
           },
           );
         },

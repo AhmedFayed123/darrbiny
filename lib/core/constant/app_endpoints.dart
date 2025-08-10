@@ -24,4 +24,6 @@ class AppEndpoints {
   static const String requestsAccept = 'requests/accept';
   static const String requestsClaim = 'requests/claim';
   static const String tapCharge = 'tap/charge';
+  static const String notifications = 'notifications';
+
 }

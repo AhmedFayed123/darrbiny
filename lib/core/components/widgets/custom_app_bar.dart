@@ -1,4 +1,5 @@
 
+import 'package:darrbiny/features/notifications/presentation/view/notifications_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -19,31 +20,36 @@ class CustomAppBar extends StatelessWidget {
       children: [
         InkWell(onTap: ()=>Get.back(),child: Icon(Icons.arrow_back,size: 24,)),
         Text(title,style: AppStyles.labelStyle.copyWith(color: kSecondaryColor),),
-        Container(
-          width: 42.w,
-          height: 42.h,
-          decoration: BoxDecoration(
-            color: kWhiteColor,
-            shape: BoxShape.circle,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.1),
-                blurRadius: 8,
-                offset: const Offset(0, 4),
+        InkWell(
+          onTap: (){
+            Get.to(NotificationsScreen());
+          },
+          child: Container(
+            width: 42.w,
+            height: 42.h,
+            decoration: BoxDecoration(
+              color: kWhiteColor,
+              shape: BoxShape.circle,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  blurRadius: 8,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
+            alignment: Alignment.center,
+            child: Badge(
+              alignment: Alignment.topRight,
+              offset: const Offset(1, -1),
+              smallSize: 6,
+              backgroundColor: Colors.red,
+              child: SvgPicture.asset(
+                Assets.svgVector,
+                width: 20.w,
+                height: 20.h,
+                fit: BoxFit.contain,
               ),
-            ],
-          ),
-          alignment: Alignment.center,
-          child: Badge(
-            alignment: Alignment.topRight,
-            offset: const Offset(1, -1),
-            smallSize: 6,
-            backgroundColor: Colors.red,
-            child: SvgPicture.asset(
-              Assets.svgVector,
-              width: 20.w,
-              height: 20.h,
-              fit: BoxFit.contain,
             ),
           ),
         )

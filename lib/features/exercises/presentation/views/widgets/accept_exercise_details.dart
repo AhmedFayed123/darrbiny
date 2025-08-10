@@ -38,16 +38,17 @@ class AcceptExerciseDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<LearnerExercisesController>();
+    final controller = Get.put(LearnerExercisesController());
     final double parsedRating = double.tryParse(rating) ?? 0.0;
 
     return SafeArea(
       child: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 12.0.w),
+          padding: EdgeInsets.symmetric(horizontal: 12.0.w,vertical: 8.h),
           child: Column(
             children: [
               CustomAppBar(title: 'التفاصيل'),
+              SizedBox(height: 16.h),
               Container(
                 padding: EdgeInsets.all(16.w),
                 decoration: BoxDecoration(
@@ -256,9 +257,12 @@ class AcceptExerciseDetails extends StatelessWidget {
   }
 
   Widget _buildSessionCard(
-    Data session,
-    LearnerExercisesController controller,
-  ) {
+      Data session,
+      LearnerExercisesController controller,
+      ) {
+    final isCompleted = (session.status ?? '').contains('مكتملة') ||
+        (session.status ?? '').toLowerCase().contains('completed');
+
     return Card(
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
@@ -271,40 +275,38 @@ class AcceptExerciseDetails extends StatelessWidget {
             _buildRow('الوقت', '${session.startTime} - ${session.endTime}'),
             _buildRow('الحالة', session.status ?? ''),
             SizedBox(height: 10.h),
+
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed:
-                        () => _onCompleteSession(controller, session.id!),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12.r),
+                if (!isCompleted) ...[
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () => _onCompleteSession(controller, session.id!),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12.r),
+                        ),
                       ),
+                      child: Text("اكتملت", style: AppStyles.textStyle16regular),
                     ),
-                    child: Text("اكتملت", style: AppStyles.textStyle16regular),
                   ),
-                ),
-                SizedBox(width: 10.w),
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: () => _onCancelSession(controller, session.id!),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.redAccent,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12.r),
-                      ),
-                    ),
-                    child: Text("إلغاء", style: AppStyles.textStyle16regular),
-                  ),
-                ),
-                if ((session.status ?? '').contains('مكتملة') ||
-                    (session.status ?? '').toLowerCase().contains(
-                      'completed',
-                    )) ...[
                   SizedBox(width: 10.w),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () => _onCancelSession(controller, session.id!),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.redAccent,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12.r),
+                        ),
+                      ),
+                      child: Text("إلغاء", style: AppStyles.textStyle16regular),
+                    ),
+                  ),
+                ],
+                if (isCompleted) ...[
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () => _onRateSession(controller, session.id!),
@@ -325,6 +327,7 @@ class AcceptExerciseDetails extends StatelessWidget {
       ),
     );
   }
+
 
   void _onRateSession(LearnerExercisesController controller, int sessionId) {
     final TextEditingController notesController = TextEditingController();
@@ -479,6 +482,8 @@ class AcceptExerciseDetails extends StatelessWidget {
                     );
                   },
                 );
+                controller.getSessionsPerRequest(requestId: requestId);
+                controller.fetchRequests();
               } else {
                 Get.snackbar(
                   "خطأ",
@@ -510,5 +515,7 @@ class AcceptExerciseDetails extends StatelessWidget {
       sessionId: sessionId,
       onSuccess: () => Get.snackbar("تم", "تم تأكيد الجلسة"),
     );
+    controller.getSessionsPerRequest(requestId: requestId);
+    controller.fetchRequests();
   }
 }

@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import '../../../../../core/constant/colors.dart';
 import '../../../../../core/constant/styles.dart';
 import '../../../../../generated/assets.dart';
+import '../../../../notifications/presentation/view/notifications_screen.dart';
 import '../../../../profile/presentation/controllers/learner_profile_controller.dart';
 
 class HomeAppBar extends StatelessWidget {
@@ -14,7 +15,7 @@ class HomeAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final profileController = Get.find<LearnerProfileController>();
+    final profileController = Get.put(LearnerProfileController());
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -26,37 +27,42 @@ class HomeAppBar extends StatelessWidget {
               final name =
                   profileController.learnerProfile.value?.name ?? '';
               return Text(
-                  ' اهلا$name',
+                  ' اهلا $name ',
                 style: AppStyles.labelStyle.copyWith(color: kSecondaryColor),
               );
             }),
           ],
         ),
-        Container(
-          width: 48.w,
-          height: 48.h,
-          decoration: BoxDecoration(
-            color: kWhiteColor,
-            shape: BoxShape.circle,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.2),
-                blurRadius: 8,
-                offset: const Offset(0, 4),
+        InkWell(
+          onTap: (){
+            Get.to(NotificationsScreen());
+          },
+          child: Container(
+            width: 42.w,
+            height: 42.h,
+            decoration: BoxDecoration(
+              color: kWhiteColor,
+              shape: BoxShape.circle,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.2),
+                  blurRadius: 8,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
+            alignment: Alignment.center,
+            child: Badge(
+              alignment: Alignment.topRight,
+              offset: const Offset(1, -1),
+              smallSize: 6,
+              backgroundColor: Colors.red,
+              child: SvgPicture.asset(
+                Assets.svgVector,
+                width: 20.w,
+                height: 20.h,
+                fit: BoxFit.contain,
               ),
-            ],
-          ),
-          alignment: Alignment.center,
-          child: Badge(
-            alignment: Alignment.topRight,
-            offset: const Offset(1, -1),
-            smallSize: 6,
-            backgroundColor: Colors.red,
-            child: SvgPicture.asset(
-              Assets.svgVector,
-              width: 20.w,
-              height: 20.h,
-              fit: BoxFit.contain,
             ),
           ),
         ),
@@ -70,7 +76,7 @@ class InstructorHomeAppBar extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    final profileController = Get.find<InstructorProfileController>();
+    final profileController = Get.put(InstructorProfileController());
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -82,37 +88,42 @@ class InstructorHomeAppBar extends StatelessWidget{
               final name =
                   profileController.instructorProfile.value?.name ?? '';
               return Text(
-                ' اهلا$name',
+                '  اهلا $name ',
                 style: AppStyles.labelStyle.copyWith(color: kSecondaryColor),
               );
             }),
           ],
         ),
-        Container(
-          width: 48.w,
-          height: 48.h,
-          decoration: BoxDecoration(
-            color: kWhiteColor,
-            shape: BoxShape.circle,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.2),
-                blurRadius: 8,
-                offset: const Offset(0, 4),
+        InkWell(
+          onTap: (){
+            Get.to(NotificationsScreen());
+          },
+          child: Container(
+            width: 42.w,
+            height: 42.h,
+            decoration: BoxDecoration(
+              color: kWhiteColor,
+              shape: BoxShape.circle,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.2),
+                  blurRadius: 8,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
+            alignment: Alignment.center,
+            child: Badge(
+              alignment: Alignment.topRight,
+              offset: const Offset(1, -1),
+              smallSize: 6,
+              backgroundColor: Colors.red,
+              child: SvgPicture.asset(
+                Assets.svgVector,
+                width: 20.w,
+                height: 20.h,
+                fit: BoxFit.contain,
               ),
-            ],
-          ),
-          alignment: Alignment.center,
-          child: Badge(
-            alignment: Alignment.topRight,
-            offset: const Offset(1, -1),
-            smallSize: 6,
-            backgroundColor: Colors.red,
-            child: SvgPicture.asset(
-              Assets.svgVector,
-              width: 20.w,
-              height: 20.h,
-              fit: BoxFit.contain,
             ),
           ),
         ),

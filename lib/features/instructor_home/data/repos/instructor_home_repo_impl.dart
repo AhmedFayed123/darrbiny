@@ -54,9 +54,12 @@ class InstructorHomeRepoImpl extends InstructorHomeRepo {
   Future<Either<Failure, Map<String, dynamic>>> privateRequestsAccept(int packageId) async{
     try {
       final String? instructorId = await StorageService().getUserId();
+      print("Instructor ID in code: $instructorId");
+      print(packageId);
       final Response response = await DioHelper.postData(
         url: "${AppEndpoints.requestsAccept}/$packageId",
         data: {"instructor_id": instructorId},
+
       );
       print("aha2");
       print('ooooooooooo${response.data}');

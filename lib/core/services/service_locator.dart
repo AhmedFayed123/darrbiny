@@ -6,6 +6,8 @@ import 'package:darrbiny/features/login/data/repos/login_repo.dart';
 import 'package:darrbiny/features/login/data/repos/login_repo_impl.dart';
 import 'package:darrbiny/features/message/data/repos/chat_repo.dart';
 import 'package:darrbiny/features/message/data/repos/chat_repo_impl.dart';
+import 'package:darrbiny/features/notifications/data/repos/notification_repo.dart';
+import 'package:darrbiny/features/notifications/data/repos/notification_repo_impl.dart';
 import 'package:darrbiny/features/payment/data/repos/payment_repo.dart';
 import 'package:darrbiny/features/payment/data/repos/payment_repo_impl.dart';
 import 'package:darrbiny/features/profile/data/repos/profile_repo.dart';
@@ -53,6 +55,7 @@ class ServiceLocator {
     sl.registerLazySingleton<LearnerExercisesRepo>(() => LearnerExercisesRepoImpl());
     sl.registerLazySingleton<InstructorExercisesRepo>(() => InstructorExercisesRepoImpl());
     sl.registerLazySingleton<PaymentRepo>(() => PaymentRepoImpl());
+    sl.registerLazySingleton<NotificationRepo>(() => NotificationRepoImpl());
 
 
   }

@@ -31,6 +31,14 @@ class AcceptedExercisesList extends StatelessWidget {
           final exercise = controller.activeRequests[index];
 
           return ActiveCourseCard(
+            onTap2: () {
+              Get.to(
+                () => ChatStartView(
+                  otherUserId: exercise.instructorId ?? 0,
+                  userName: exercise.instructor?.name ?? "",
+                ),
+              );
+            },
             durationDays: exercise.package.daysCount.toString() ?? "",
             durationHours: exercise.package.hoursCount.toString() ?? "",
             learnerImageUrl: Assets.imagesGirl,
