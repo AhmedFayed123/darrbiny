@@ -50,5 +50,26 @@ class InstructorExercisesController extends BaseExercisesController<InstructorLe
 
     isLoading.value = false;
   }
+  Future<void> rejectSession({
+    required int sessionId,
+    required String reason,
+    void Function()? onSuccess,
+    void Function(String message)? onError,
+  }) async {
+    final result = await instructorExercisesRepo.sessionsReject(reason, sessionId);
+
+    result.fold(
+          (failure) {
+        error.value = failure.message;
+        print('❌ Session Rejection Failed: ${failure.message}');
+        if (onError != null) onError(failure.message);
+      },
+          (response) {
+        print('✅ Session Rejected: $response');
+        if (onSuccess != null) onSuccess();
+        fetchRequests();
+      },
+    );
+  }
 
 }

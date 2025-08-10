@@ -41,16 +41,47 @@ class InstructorTrainingList extends StatelessWidget {
                       final item = dataList[index];
 
                       return InstructorTrainingCourseCard(
-                        trainerName: item.instructor?.name ?? 'غير معروف',
+                        trainerName: item.learner?.name ?? 'غير معروف',
                         trainerImageUrl: Assets.imagesGirl,
-                        rating: double.tryParse(item.instructor?.rate ?? '0') ?? 0.0,
+                        rating: double.tryParse(item.learner?.rate ?? '0') ?? 0.0,
                         fromDate: item.startDate ?? 'لم يحدد بعد',
-                        toDate: '',
                         location: '${item.locationCity ?? ''} - ${item.locationArea ?? ''}',
                         trainerCar: item.hasLearnerCar == true ? 'نعم' : 'لا',
                         transportRequest: item.requiresTransport == true ? 'نعم' : 'لا',
                         price: int.tryParse(item.totalPrice?.split('.').first ?? '0') ?? 0,
                         duration: item.type ?? '',
+                        onTap: () {},
+                        isNew: false,
+                        onPressed: () {
+                          final packageId = item.id;
+                          final requestType = item.type?.toLowerCase() ?? '';
+
+                          if (requestType == 'private') {
+                            controller.acceptPrivateRequest(
+                              packageId: packageId ?? 0,
+                              onSuccess: () {
+                                Get.snackbar("تم", "تم قبول الطلب الخاص بنجاح");
+                                controller.fetchHomeData(); // لتحديث القائمة
+                              },
+                              onError: (error) {
+                                Get.snackbar("خطأ", error);
+                              },
+                            );
+                          } else if (requestType == 'general') {
+                            controller.claimGeneralRequest(
+                              packageId: packageId ?? 0,
+                              onSuccess: () {
+                                Get.snackbar("تم", "تم المطالبة بالطلب العام بنجاح");
+                                controller.fetchHomeData();
+                              },
+                              onError: (error) {
+                                Get.snackbar("خطأ", error);
+                              },
+                            );
+                          } else {
+                            Get.snackbar("تنبيه", "نوع الطلب غير معروف");
+                          }
+                        },
                       );
                     },
                   );

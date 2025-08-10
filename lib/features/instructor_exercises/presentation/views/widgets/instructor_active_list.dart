@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import '../../../../../generated/assets.dart';
 import '../../../../message/presentation/views/chat_start_view.dart';
 import '../../controllers/instructor_exercises_controller.dart';
+import 'rejected_session_details.dart';
 import 'instructor_active_list_item.dart';
 
 class InstructorActiveList extends StatelessWidget {
@@ -49,7 +50,9 @@ class InstructorActiveList extends StatelessWidget {
                   userName: exercise.learner.name,
                 ),
               );
-            },
+            }, onTap2: () {
+              Get.to(RejectedSessionDetails(requestId: exercise.packageId,));
+          },
           );
         },
       );

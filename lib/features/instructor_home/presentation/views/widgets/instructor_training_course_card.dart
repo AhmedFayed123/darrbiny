@@ -1,3 +1,4 @@
+import 'package:darrbiny/core/components/widgets/custom_button.dart';
 import 'package:darrbiny/core/constant/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,31 +8,31 @@ class InstructorTrainingCourseCard extends StatelessWidget {
   final String trainerImageUrl;
   final double rating;
   final String fromDate;
-  final String toDate;
   final String location;
   final String trainerCar;
   final String transportRequest;
   final int price;
   final String duration;
-
+  final VoidCallback onPressed;
+  final VoidCallback onTap;
+  final bool isNew;
   const InstructorTrainingCourseCard({
     super.key,
     required this.trainerName,
     required this.trainerImageUrl,
     required this.rating,
     required this.fromDate,
-    required this.toDate,
     required this.location,
     required this.trainerCar,
     required this.transportRequest,
     required this.price,
-    required this.duration,
+    required this.duration, required this.onPressed, required this.onTap, required this.isNew,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(16.w),
+      padding: EdgeInsets.symmetric(vertical: 12.h),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(24),
@@ -123,29 +124,33 @@ class InstructorTrainingCourseCard extends StatelessWidget {
                   ),
                 ],
               ),
-              Container(
-                padding:
-                EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-                decoration: BoxDecoration(
-                  border: Border.all(color: const Color(0xFF8B6EF6)),
-                  borderRadius: BorderRadius.circular(24),
-                ),
-                child: Row(
-                  children: [
-                    const Text(
-                      'موقع المتدربة',
-                      style: TextStyle(
-                        color: kSecondaryColor,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 12,
-                      ),
+              if (isNew)
+                InkWell(
+                  onTap: onTap,
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: const Color(0xFF8B6EF6)),
+                      borderRadius: BorderRadius.circular(24),
                     ),
-                    SizedBox(width: 6.w),
-                    const Icon(Icons.location_on_outlined,
-                        color: kSecondaryColor),
-                  ],
-                ),
-              ),
+                    child: Row(
+                      children: [
+                        const Text(
+                          'تواصل مع المتدربة',
+                          style: TextStyle(
+                            color: kSecondaryColor,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 12,
+                          ),
+                        ),
+                        SizedBox(width: 6.w),
+                        const Icon(Icons.location_on_outlined, color: kSecondaryColor),
+                      ],
+                    ),
+                  ),
+                )
+              else
+                const SizedBox(), // أو تجاهل else حسب الحالة
             ],
           ),
 
@@ -162,7 +167,7 @@ class InstructorTrainingCourseCard extends StatelessWidget {
             child: Column(
               children: [
                 _buildRow('التاريخ (من)', fromDate),
-                _buildRow('التاريخ (إلى)', toDate),
+                // _buildRow('التاريخ (إلى)', toDate),
                 _buildRow('مكان التدريب', location),
                 _buildRow('سيارة المدربة', trainerCar),
                 _buildRow('طلب نقل المتدرب', transportRequest),
@@ -173,54 +178,7 @@ class InstructorTrainingCourseCard extends StatelessWidget {
 
           SizedBox(height: 16.h),
 
-
-          // عرض سعر
-          // Container(
-          //   decoration: BoxDecoration(
-          //     color: Colors.transparent,
-          //     borderRadius: BorderRadius.circular(25),
-          //     border: Border.all(
-          //       color: kSecondaryColor,
-          //       width: 1.2,
-          //     ),
-          //   ),
-          //   padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
-          //   child: Row(
-          //     children: [
-          //       Expanded(
-          //         child: TextField(
-          //           decoration: const InputDecoration(
-          //             hintText: 'اكتب سعرك هنا',
-          //             border: InputBorder.none,
-          //           ),
-          //           style: const TextStyle(fontSize: 14),
-          //         ),
-          //       ),
-          //       Container(
-          //         decoration: BoxDecoration(
-          //           color: kSecondaryColor.withOpacity(.15),
-          //           borderRadius: BorderRadius.circular(25),
-          //         ),
-          //         child: TextButton(
-          //           onPressed: () {},
-          //           style: TextButton.styleFrom(
-          //             padding: EdgeInsets.symmetric(
-          //                 horizontal: 20.w, vertical: 8.h),
-          //             foregroundColor: kSecondaryColor,
-          //             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          //           ),
-          //           child: const Text(
-          //             'قدم عرض',
-          //             style: TextStyle(
-          //               fontWeight: FontWeight.bold,
-          //               fontSize: 14,
-          //             ),
-          //           ),
-          //         ),
-          //       ),
-          //     ],
-          //   ),
-          // ),
+          CustomButton(text: 'اقبل الطلب', onPressed: onPressed)
         ],
       ),
     );

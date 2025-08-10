@@ -3,15 +3,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../../core/constant/colors.dart';
 import '../../../../../core/constant/styles.dart';
 
 class DatePickerController extends GetxController {
-  final selectedDate = ''.obs;
+  final selectedDate = Rx<DateTime?>(null);
+  final formattedDate = ''.obs;
 
-  void setDate(String date) {
+  void setDate(DateTime date) {
     selectedDate.value = date;
+    formattedDate.value =
+    "${date.day.toString().padLeft(2, '0')}-"
+        "${date.month.toString().padLeft(2, '0')}-"
+        "${date.year}";
   }
 }
 
@@ -20,7 +26,7 @@ class DatePickerField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(DatePickerController());
+    final controller = Get.find<DatePickerController>();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -31,18 +37,16 @@ class DatePickerField extends StatelessWidget {
         ),
         SizedBox(height: 8.h),
         Obx(
-          () => InkWell(
+              () => InkWell(
             onTap: () async {
               final DateTime? picked = await showDatePicker(
                 context: context,
                 initialDate: DateTime.now(),
-                firstDate: DateTime(2020),
-                lastDate: DateTime(2100),
+                firstDate: DateTime.now(),
+                lastDate: DateTime.now().add(const Duration(days: 365)),
               );
               if (picked != null) {
-                final formatted =
-                    "${picked.year}-${picked.month.toString().padLeft(2, '0')}-${picked.day.toString().padLeft(2, '0')}";
-                controller.setDate(formatted);
+                controller.setDate(picked);
               }
             },
             child: Container(
@@ -62,10 +66,10 @@ class DatePickerField extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    controller.selectedDate.value.isEmpty
+                    controller.selectedDate.value == null
                         ? 'اختر التاريخ'
-                        : controller.selectedDate.value,
-                    style: AppStyles.textStyle16regular.copyWith(color: kGray400)
+                        : DateFormat('dd/MM/yyyy').format(controller.selectedDate.value!),
+                    style: AppStyles.textStyle16regular.copyWith(color: kGray400),
                   ),
                   const Icon(Icons.calendar_month_outlined),
                 ],

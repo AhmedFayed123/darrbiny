@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../core/constant/colors.dart';
-import '../../../../../generated/assets.dart';
 
 class PendingExercisesItem extends StatelessWidget {
   const PendingExercisesItem({super.key, this.durationDays, this.packName, this.durationHours, required this.learnerImageUrl, required this.instructorName, required this.rating, this.price, this.instructorMessage, required this.onTap, required this.onTap2,});
@@ -132,27 +131,27 @@ class PendingExercisesItem extends StatelessWidget {
                   ),
                 ],
               ),
-              InkWell(
-                onTap: onTap,
-                child: Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 16.w,
-                    vertical: 8.h,
-                  ),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: kSecondaryColor),
-                    borderRadius: BorderRadius.circular(24.r),
-                  ),
-                  child: Text(
-                    'تواصل مع المدربة',
-                    style: TextStyle(
-                      color: kSecondaryColor,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 12.sp,
-                    ),
-                  ),
-                ),
-              ),
+              // InkWell(
+              //   onTap: onTap,
+              //   child: Container(
+              //     padding: EdgeInsets.symmetric(
+              //       horizontal: 16.w,
+              //       vertical: 8.h,
+              //     ),
+              //     decoration: BoxDecoration(
+              //       border: Border.all(color: kSecondaryColor),
+              //       borderRadius: BorderRadius.circular(24.r),
+              //     ),
+              //     child: Text(
+              //       'تواصل مع المدربة',
+              //       style: TextStyle(
+              //         color: kSecondaryColor,
+              //         fontWeight: FontWeight.w500,
+              //         fontSize: 12.sp,
+              //       ),
+              //     ),
+              //   ),
+              // ),
             ],
           ),
 

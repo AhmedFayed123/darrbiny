@@ -1,5 +1,5 @@
-class Instructor {
-  Instructor({
+class Learner {
+  Learner({
       this.id, 
       this.firebaseUid, 
       this.name, 
@@ -17,7 +17,7 @@ class Instructor {
       this.createdAt, 
       this.updatedAt,});
 
-  Instructor.fromJson(dynamic json) {
+  Learner.fromJson(dynamic json) {
     id = json['id'];
     firebaseUid = json['firebase_uid'];
     name = json['name'];
@@ -43,8 +43,8 @@ class Instructor {
   dynamic phoneVerifiedAt;
   String? phone;
   String? userType;
-  String? licenseNumber;
-  int? experienceYears;
+  dynamic licenseNumber;
+  dynamic experienceYears;
   String? bio;
   String? status;
   String? rate;

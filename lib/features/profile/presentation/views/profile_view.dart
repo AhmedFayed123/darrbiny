@@ -1,18 +1,17 @@
 import 'package:darrbiny/core/components/widgets/custom_button.dart';
 import 'package:darrbiny/core/constant/styles.dart';
-import 'package:darrbiny/features/profile/presentation/views/widgets/wallet_view.dart';
+import 'package:darrbiny/features/onboarding/welcome_view.dart';
 import 'package:darrbiny/features/profile/presentation/views/widgets/confirmation_dialog.dart';
 import 'package:darrbiny/features/profile/presentation/views/widgets/profile_image_widget.dart';
-import 'package:darrbiny/features/profile/presentation/views/widgets/rewards_view.dart';
 import 'package:darrbiny/features/sign_up/presentation/views/sign_up_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../../../../core/components/widgets/custom_app_bar.dart';
 import '../../../../core/constant/colors.dart';
+import '../../../../core/services/storage_service.dart';
 import '../../../../generated/assets.dart';
 import '../controllers/learner_profile_controller.dart';
-import 'widgets/bank_account.dart';
 import 'widgets/edit_profile_view.dart';
 import 'widgets/language_view.dart';
 
@@ -99,51 +98,51 @@ class ProfileView extends StatelessWidget {
                         Get.to(EditProfileView());
                       },
                     ),
-                    _profileSectionTile(
-                      title: 'الحساب البنكي',
-                      icon: Icons.attach_money,
-                      onTap: () {
-                        Get.to(BankAccount());
-                      },
-                    ),
-                    _profileSectionTile(
-                      title: 'مكافآتي',
-                      icon: Icons.card_giftcard,
-                      iconColor: kPositiveTrendColor,
-                      onTap: () {
-                        Get.to(RewardsView());
-                      },
-                    ),
-                    _profileSectionTile(
-                      title: 'المحفظة',
-                      icon: Icons.account_balance_wallet,
-                      iconColor: kSecondaryColor,
-                      onTap: () {
-                        Get.to(WalletView());
-                      },
-                    ),
-                    _profileSectionTile(
-                      title: 'حذف حسابي',
-                      icon: Icons.delete_forever_outlined,
-                      iconColor: Colors.red,
-                      onTap: () {
-                        showDialog(
-                          context: context,
-                          builder:
-                              (_) => ConfirmationDialog(
-                                onConfirm: () {
-                                  Get.back();
-                                },
-                                onCancel: () {
-                                  Get.back();
-                                },
-                                image: Assets.imagesTrash2,
-                                title: 'حذف الجساب',
-                                desc: 'هل انت متأكد انك تريد حذف الحساب',
-                              ),
-                        );
-                      },
-                    ),
+                    // _profileSectionTile(
+                    //   title: 'الحساب البنكي',
+                    //   icon: Icons.attach_money,
+                    //   onTap: () {
+                    //     Get.to(BankAccount());
+                    //   },
+                    // ),
+                    // _profileSectionTile(
+                    //   title: 'مكافآتي',
+                    //   icon: Icons.card_giftcard,
+                    //   iconColor: kPositiveTrendColor,
+                    //   onTap: () {
+                    //     Get.to(RewardsView());
+                    //   },
+                    // ),
+                    // _profileSectionTile(
+                    //   title: 'المحفظة',
+                    //   icon: Icons.account_balance_wallet,
+                    //   iconColor: kSecondaryColor,
+                    //   onTap: () {
+                    //     Get.to(WalletView());
+                    //   },
+                    // ),
+                    // _profileSectionTile(
+                    //   title: 'حذف حسابي',
+                    //   icon: Icons.delete_forever_outlined,
+                    //   iconColor: Colors.red,
+                    //   onTap: () {
+                    //     showDialog(
+                    //       context: context,
+                    //       builder:
+                    //           (_) => ConfirmationDialog(
+                    //             onConfirm: () {
+                    //               Get.back();
+                    //             },
+                    //             onCancel: () {
+                    //               Get.back();
+                    //             },
+                    //             image: Assets.imagesTrash2,
+                    //             title: 'حذف الجساب',
+                    //             desc: 'هل انت متأكد انك تريد حذف الحساب',
+                    //           ),
+                    //     );
+                    //   },
+                    // ),
                   ],
                 ),
               ),
@@ -170,7 +169,7 @@ class ProfileView extends StatelessWidget {
                       title: 'اللغة',
                       trailing: _languageChip(),
                     ),
-                    _switchTile(title: 'الإشعارات', value: true),
+                    // _switchTile(title: 'الإشعارات', value: true),
                   ],
                 ),
               ),
@@ -263,15 +262,15 @@ class ProfileView extends StatelessWidget {
     );
   }
 
-  Widget _switchTile({required String title, required bool value}) {
-    return SwitchListTile(
-      contentPadding: EdgeInsets.zero,
-      title: Text(title),
-      secondary: const Icon(Icons.notifications, color: kButtonSecondaryColor),
-      value: value,
-      onChanged: (val) {},
-    );
-  }
+  // Widget _switchTile({required String title, required bool value}) {
+  //   return SwitchListTile(
+  //     contentPadding: EdgeInsets.zero,
+  //     title: Text(title),
+  //     secondary: const Icon(Icons.notifications, color: kButtonSecondaryColor),
+  //     value: value,
+  //     onChanged: (val) {},
+  //   );
+  // }
 
   Widget _supportSectionTile({required String title, required IconData icon}) {
     return ListTile(
@@ -297,8 +296,9 @@ class ProfileView extends StatelessWidget {
           context: context,
           builder:
               (_) => ConfirmationDialog(
-                onConfirm: () {
-                  Get.back();
+                onConfirm: () async{
+                  await StorageService().logOut();
+                  Get.offAll(WelcomeView());
                 },
                 onCancel: () {
                   Get.back();

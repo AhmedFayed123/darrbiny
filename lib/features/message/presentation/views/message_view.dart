@@ -26,7 +26,7 @@ class MessageView extends StatelessWidget {
           child: Column(
             children: [
               const CustomAppBar(title: 'الرسائل'),
-              const SearchBarWidget(),
+              // const SearchBarWidget(),
               SizedBox(height: 12.h),
               Align(
                 alignment: Alignment.centerRight,

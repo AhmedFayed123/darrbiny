@@ -1,5 +1,3 @@
-
-import 'package:darrbiny/features/home/presentation/views/widgets/search_bar_widget.dart';
 import 'package:darrbiny/features/home/presentation/views/widgets/time_line_steps.dart';
 import 'package:darrbiny/features/home/presentation/views/widgets/trainer_list.dart';
 import 'package:darrbiny/features/home/presentation/views/widgets/training_package_list.dart';
@@ -32,7 +30,7 @@ class HomeViewBody extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               HomeAppBar(),
-              SearchBarWidget(),
+              // SearchBarWidget(),
               VideoThumbnailWidget(),
               CustomSeeAllRow(
                 title: 'الباقات التدريبيه',

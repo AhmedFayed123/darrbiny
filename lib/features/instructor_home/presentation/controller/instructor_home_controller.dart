@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import '../../../../core/services/service_locator.dart';
 import '../../../instructor_exercises/presentation/views/instructor_exercises_view.dart';
 import '../../../profile/presentation/views/instructor_profile_view.dart';
-import '../../data/models/Instructor_home_list_model.dart';
+import '../../data/models/instructor_home_list_model/Instructor_home_list_model.dart';
 import '../../data/repos/instructor_home_repo.dart';
 
 class InstructorHomeController extends GetxController {
@@ -32,17 +32,43 @@ class InstructorHomeController extends GetxController {
       },
           (instructorHomeList) {
         homeData.value = instructorHomeList;
+        print('homeData');
+        print(homeData.value);
       },
     );
-
 
     isLoading.value = false;
   }
 
+  Future<void> claimGeneralRequest({
+    required int packageId,
+    required VoidCallback onSuccess,
+    required Function(String) onError,
+  }) async {
+    final result = await _repo.generalRequestsClaim(packageId);
+
+    result.fold(
+          (failure) => onError(failure.message),
+          (data) => onSuccess(),
+    );
+  }
+
+  Future<void> acceptPrivateRequest({
+    required int packageId,
+    required VoidCallback onSuccess,
+    required Function(String) onError,
+  }) async {
+    final result = await _repo.privateRequestsAccept(packageId);
+
+    result.fold(
+          (failure) => onError(failure.message),
+          (data) => onSuccess(),
+    );
+  }
+
   @override
-  void onInit() async{
+  void onInit() {
     super.onInit();
-    // Replace with actual instructor ID
     fetchHomeData();
   }
 }

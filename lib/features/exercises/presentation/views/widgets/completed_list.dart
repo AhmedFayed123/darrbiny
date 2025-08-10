@@ -38,7 +38,7 @@ class CompletedList extends StatelessWidget {
             price: exercise.totalPrice ?? "",
             packName: exercise.package.name,
             date: exercise.startDate ?? "", onTap: () {
-            Get.to(()=>MoreDetailsView(learnerId: exercise.learnerId, packageId: exercise.packageId, totalPrice: exercise.package.price));
+            Get.to(()=>MoreDetailsView(learnerId: exercise.learnerId, packageId: exercise.packageId, totalPrice: exercise.package.price, packageName: exercise.package.name,));
 
           },
           );

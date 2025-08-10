@@ -39,7 +39,7 @@ class CourseDetailsView extends StatelessWidget {
                         Get.to(() => MoreDetailsView(
                           learnerId: int.parse(learnerId),
                           packageId: package.id ?? 1,
-                          totalPrice: package.price ?? "",
+                          totalPrice: package.price ?? "", packageName: package.name??'',
                         ));
                       }
                     } else {
@@ -48,7 +48,7 @@ class CourseDetailsView extends StatelessWidget {
                         Get.to(() => MoreDetailsView(
                           learnerId: learnerId,
                           packageId: package.id ?? 1,
-                          totalPrice: package.price ?? "",
+                          totalPrice: package.price ?? "", packageName: package.name??'',
                         ));
                       }
                     }

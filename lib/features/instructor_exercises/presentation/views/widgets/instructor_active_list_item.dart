@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../core/constant/colors.dart';
 
 class InstructorActiveListItem extends StatelessWidget {
-  const InstructorActiveListItem({super.key, required this.trainerName, required this.trainerImageUrl, required this.rating, required this.fromDate, required this.toDate, required this.location, required this.trainerCar, required this.transportRequest, required this.price, required this.duration, required this.onTap});
+  const InstructorActiveListItem({super.key, required this.trainerName, required this.trainerImageUrl, required this.rating, required this.fromDate, required this.toDate, required this.location, required this.trainerCar, required this.transportRequest, required this.price, required this.duration, required this.onTap, required this.onTap2});
 
 
   final String trainerName;
@@ -17,11 +17,12 @@ class InstructorActiveListItem extends StatelessWidget {
   final String transportRequest;
   final int price;
   final VoidCallback onTap;
+  final VoidCallback onTap2;
   final String duration;
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(12),
+      padding: EdgeInsets.symmetric(vertical: 12.h),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(24),
@@ -168,7 +169,7 @@ class InstructorActiveListItem extends StatelessWidget {
             children: [
               Expanded(
                 child: InkWell(
-                  onTap: () {},
+                  onTap: onTap2,
                   child: Container(
                     padding: EdgeInsets.symmetric(
                       horizontal: 16.w,

@@ -19,8 +19,9 @@ class LearnerExercisesRepoImpl extends LearnerExercisesRepo{
         url: AppEndpoints.requestsLearner,
         data: {"learner_id": learnerId},
       );
-      print('iiiii');
+      print('jjjjj');
       print(response.data);
+      print(learnerId);
       return right(LearnerLessonRequestsResponse.fromJson(response.data));
     } on DioException catch (e) {
       return left(ServerFailure.fromDioError(e));

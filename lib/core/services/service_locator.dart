@@ -6,6 +6,8 @@ import 'package:darrbiny/features/login/data/repos/login_repo.dart';
 import 'package:darrbiny/features/login/data/repos/login_repo_impl.dart';
 import 'package:darrbiny/features/message/data/repos/chat_repo.dart';
 import 'package:darrbiny/features/message/data/repos/chat_repo_impl.dart';
+import 'package:darrbiny/features/payment/data/repos/payment_repo.dart';
+import 'package:darrbiny/features/payment/data/repos/payment_repo_impl.dart';
 import 'package:darrbiny/features/profile/data/repos/profile_repo.dart';
 import 'package:darrbiny/features/profile/data/repos/profile_repo_impl.dart';
 import 'package:get_it/get_it.dart';
@@ -50,13 +52,8 @@ class ServiceLocator {
     sl.registerLazySingleton<ChatRepo>(() => ChatRepoImpl());
     sl.registerLazySingleton<LearnerExercisesRepo>(() => LearnerExercisesRepoImpl());
     sl.registerLazySingleton<InstructorExercisesRepo>(() => InstructorExercisesRepoImpl());
-    // sl.registerLazySingleton<LoginRepo>(() => LoginRepoImpl());
-    // sl.registerLazySingleton<SignupRepo>(() => SignupRepoImpl());
-    // sl.registerLazySingleton<MarketRepo>(() => MarketRepoImpl());
-    // sl.registerLazySingleton<ProfileRepo>(() => ProfileRepoImpl());
-    // sl.registerLazySingleton<WalletRepo>(() => WalletRepoImpl());
-    // sl.registerLazySingleton<TradeRepo>(() => TradeRepoImpl());
-    // sl.registerLazySingleton<HomeRepo>(() => HomeRepoImpl(dio: Dio()));
+    sl.registerLazySingleton<PaymentRepo>(() => PaymentRepoImpl());
+
 
   }
 }

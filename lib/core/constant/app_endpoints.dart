@@ -21,5 +21,7 @@ class AppEndpoints {
   static const String learnersRegister = 'learners/register/firebase';
   static const String instructorsHomeList = 'requests/instructor';
   static const String requestsSessions = 'requests/sessions';
-
+  static const String requestsAccept = 'requests/accept';
+  static const String requestsClaim = 'requests/claim';
+  static const String tapCharge = 'tap/charge';
 }

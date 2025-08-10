@@ -1,4 +1,5 @@
-import 'Instructor.dart';
+import 'Learner.dart';
+import 'Package.dart';
 
 class Data {
   Data({
@@ -16,9 +17,12 @@ class Data {
       this.status, 
       this.notes, 
       this.rejectionReason, 
+      this.deletedAt, 
       this.createdAt, 
       this.updatedAt, 
-      this.instructor,});
+      this.learner, 
+      this.instructor, 
+      this.package,});
 
   Data.fromJson(dynamic json) {
     id = json['id'];
@@ -35,15 +39,18 @@ class Data {
     status = json['status'];
     notes = json['notes'];
     rejectionReason = json['rejection_reason'];
+    deletedAt = json['deleted_at'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
-    instructor = json['instructor'] != null ? Instructor.fromJson(json['instructor']) : null;
+    learner = json['learner'] != null ? Learner.fromJson(json['learner']) : null;
+    instructor = json['instructor'];
+    package = json['package'] != null ? Package.fromJson(json['package']) : null;
   }
   int? id;
   int? learnerId;
-  int? instructorId;
+  dynamic instructorId;
   int? packageId;
-  dynamic startDate;
+  String? startDate;
   String? locationCity;
   String? locationArea;
   bool? hasLearnerCar;
@@ -53,9 +60,12 @@ class Data {
   String? status;
   String? notes;
   dynamic rejectionReason;
+  dynamic deletedAt;
   String? createdAt;
   String? updatedAt;
-  Instructor? instructor;
+  Learner? learner;
+  dynamic instructor;
+  Package? package;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -73,10 +83,15 @@ class Data {
     map['status'] = status;
     map['notes'] = notes;
     map['rejection_reason'] = rejectionReason;
+    map['deleted_at'] = deletedAt;
     map['created_at'] = createdAt;
     map['updated_at'] = updatedAt;
-    if (instructor != null) {
-      map['instructor'] = instructor?.toJson();
+    if (learner != null) {
+      map['learner'] = learner?.toJson();
+    }
+    map['instructor'] = instructor;
+    if (package != null) {
+      map['package'] = package?.toJson();
     }
     return map;
   }

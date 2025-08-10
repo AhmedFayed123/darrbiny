@@ -57,28 +57,31 @@ class LearnerExercisesController extends BaseExercisesController<LearnerLessonRe
   final sessionsPerRequestModel = Rxn<SessionsPerRequestModel>();
 
   @override
+  @override
   Future<void> fetchRequests() async {
     isLoading.value = true;
     error.value = '';
     clearRequests();
 
-    final result = await learnerExercisesRepo.requestsLearner();
+    try {
+      final result = await learnerExercisesRepo.requestsLearner();
 
-    result.fold(
-          (failure) {
-        print(failure.message);
-        print('aaaa');
-        return error.value = failure.message;
-      },
-          (response) {
-        lessonRequestsResponse.value = response;
-        handleResponse(response);
-        print('pppppp');
-        print(lessonRequestsResponse);
-      },
-    );
-
-    isLoading.value = false;
+      result.fold(
+            (failure) {
+          print(failure.message);
+          print('aaaa');
+          error.value = failure.message;
+        },
+            (response) {
+          lessonRequestsResponse.value = response;
+          handleResponse(response);
+          print('pppppp');
+          print(lessonRequestsResponse);
+        },
+      );
+    } finally {
+      isLoading.value = false;
+    }
   }
 
   Future<void> cancelSession({

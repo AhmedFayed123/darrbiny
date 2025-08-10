@@ -42,7 +42,7 @@ class PendingExercisesList extends StatelessWidget {
             onTap: () {
               Get.to(() => ChatStartView(otherUserId: exercise.instructorId??0, userName: exercise.instructor?.name??""));
             }, onTap2: () {
-              Get.to(()=>MoreDetailsView(learnerId: exercise.learnerId, packageId: exercise.packageId, totalPrice: exercise.package.price));
+              Get.to(()=>MoreDetailsView(learnerId: exercise.learnerId, packageId: exercise.packageId, totalPrice: exercise.package.price, packageName: exercise.package.name,));
           },
           );
         },

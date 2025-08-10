@@ -11,11 +11,12 @@ import '../../../../core/components/widgets/custom_app_bar.dart';
 import '../../../../core/components/widgets/custom_button.dart';
 import '../../../../core/constant/colors.dart';
 import '../../../../core/constant/styles.dart';
+import '../../../../core/services/storage_service.dart';
 import '../../../../generated/assets.dart';
+import '../../../onboarding/welcome_view.dart';
 import '../../../sign_up/presentation/views/sign_up_view.dart';
 import '../controllers/instructor_profile_controller.dart';
 import 'widgets/bank_account.dart';
-import 'widgets/edit_profile_view.dart';
 import 'widgets/language_view.dart';
 
 class InstructorProfileView extends StatelessWidget {
@@ -101,51 +102,51 @@ class InstructorProfileView extends StatelessWidget {
                         Get.to(InstructorEditProfile());
                       },
                     ),
-                    _profileSectionTile(
-                      title: 'الدفع',
-                      icon: Icons.attach_money,
-                      onTap: () {
-                        Get.to(BankAccount());
-                      },
-                    ),
-                    _profileSectionTile(
-                      title: 'المحفظة',
-                      icon: Icons.account_balance_wallet,
-                      iconColor: kSecondaryColor,
-                      onTap: () {
-                        Get.to(WalletView());
-                      },
-                    ),
-                    _profileSectionTile(
-                      title: 'مكافآتي',
-                      icon: Icons.card_giftcard,
-                      iconColor: kPositiveTrendColor,
-                      onTap: () {
-                        Get.to(RewardsView());
-                      },
-                    ),
-                    _profileSectionTile(
-                      title: 'حذف حسابي',
-                      icon: Icons.delete_forever_outlined,
-                      iconColor: Colors.red,
-                      onTap: () {
-                        showDialog(
-                          context: context,
-                          builder:
-                              (_) => ConfirmationDialog(
-                            onConfirm: () {
-                              Get.back();
-                            },
-                            onCancel: () {
-                              Get.back();
-                            },
-                            image: Assets.imagesTrash2,
-                            title: 'حذف الجساب',
-                            desc: 'هل انت متأكد انك تريد حذف الحساب',
-                          ),
-                        );
-                      },
-                    ),
+                    // _profileSectionTile(
+                    //   title: 'الدفع',
+                    //   icon: Icons.attach_money,
+                    //   onTap: () {
+                    //     Get.to(BankAccount());
+                    //   },
+                    // ),
+                    // _profileSectionTile(
+                    //   title: 'المحفظة',
+                    //   icon: Icons.account_balance_wallet,
+                    //   iconColor: kSecondaryColor,
+                    //   onTap: () {
+                    //     Get.to(WalletView());
+                    //   },
+                    // ),
+                    // _profileSectionTile(
+                    //   title: 'مكافآتي',
+                    //   icon: Icons.card_giftcard,
+                    //   iconColor: kPositiveTrendColor,
+                    //   onTap: () {
+                    //     Get.to(RewardsView());
+                    //   },
+                    // ),
+                    // _profileSectionTile(
+                    //   title: 'حذف حسابي',
+                    //   icon: Icons.delete_forever_outlined,
+                    //   iconColor: Colors.red,
+                    //   onTap: () {
+                    //     showDialog(
+                    //       context: context,
+                    //       builder:
+                    //           (_) => ConfirmationDialog(
+                    //         onConfirm: () {
+                    //           Get.back();
+                    //         },
+                    //         onCancel: () {
+                    //           Get.back();
+                    //         },
+                    //         image: Assets.imagesTrash2,
+                    //         title: 'حذف الجساب',
+                    //         desc: 'هل انت متأكد انك تريد حذف الحساب',
+                    //       ),
+                    //     );
+                    //   },
+                    // ),
                   ],
                 ),
               ),
@@ -172,7 +173,7 @@ class InstructorProfileView extends StatelessWidget {
                       title: 'اللغة',
                       trailing: _languageChip(),
                     ),
-                    _switchTile(title: 'الإشعارات', value: true),
+                    // _switchTile(title: 'الإشعارات', value: true),
                   ],
                 ),
               ),
@@ -258,15 +259,15 @@ class InstructorProfileView extends StatelessWidget {
     );
   }
 
-  Widget _switchTile({required String title, required bool value}) {
-    return SwitchListTile(
-      contentPadding: EdgeInsets.zero,
-      title: Text(title),
-      secondary: const Icon(Icons.notifications, color: kButtonSecondaryColor),
-      value: value,
-      onChanged: (val) {},
-    );
-  }
+  // Widget _switchTile({required String title, required bool value}) {
+  //   return SwitchListTile(
+  //     contentPadding: EdgeInsets.zero,
+  //     title: Text(title),
+  //     secondary: const Icon(Icons.notifications, color: kButtonSecondaryColor),
+  //     value: value,
+  //     onChanged: (val) {},
+  //   );
+  // }
 
   Widget _supportSectionTile({required String title, required IconData icon}) {
     return ListTile(
@@ -292,8 +293,9 @@ class InstructorProfileView extends StatelessWidget {
           context: context,
           builder:
               (_) => ConfirmationDialog(
-            onConfirm: () {
-              Get.back();
+            onConfirm: () async{
+              await StorageService().logOut();
+              Get.offAll(WelcomeView());
             },
             onCancel: () {
               Get.back();

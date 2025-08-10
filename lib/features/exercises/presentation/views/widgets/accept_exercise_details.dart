@@ -269,7 +269,6 @@ class AcceptExerciseDetails extends StatelessWidget {
           children: [
             _buildRow('التاريخ', session.date ?? ''),
             _buildRow('الوقت', '${session.startTime} - ${session.endTime}'),
-            _buildRow('السعر', '${session.price} ﷼', isPrice: true),
             _buildRow('الحالة', session.status ?? ''),
             SizedBox(height: 10.h),
             Row(
